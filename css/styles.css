@@ -11,6 +11,12 @@ h2 {
     font-family: 'Roboto', sans-serif;
 }
 
+@media (max-width:700px) {
+    .brand-logo {
+        font-size: 16pt !important;
+    }
+}
+
 @media (min-width: 1000px){
     .card{
         width: 70vh;
