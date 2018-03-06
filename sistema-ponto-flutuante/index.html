@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/main.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        Precisão: <br>
+        <input id='precisao' type="number">
+        <br>
+        Limite Underflow: <br>
+        <input id='underflow' type="number">
+        <br>
+        Limite Overflow: <br>
+        <input id='overflow' type="number">
+    </form>
+        <button onclick="plot()">Calcular</button>
+    
+    <div id='quantidade'></div>
+    <div id="plotDiv"></div>
+    <script>
+        function plot() {
+            let precisao = document.getElementById('precisao').value;
+            let underflow = document.getElementById('underflow').value;
+            let overflow = document.getElementById('overflow').value;
+            let labelQuant = document.getElementById('quantidade');
+            labelQuant.innerHTML = '';
+
+            if(precisao == '' || underflow == '' || overflow == '') {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            if(underflow >= overflow) {
+                alert("O limite de UNDERFLOW deve ser menor que o limite de OVERFLOW!")
+                return;
+            }
+
+            if(precisao <= 0) {
+                alert("Coloque um valor maior que 0 para a precisão!");
+                return;
+            }
+            
+            let pontos = pontosFlutuantes(10, precisao, underflow, overflow);
+
+            labelQuant.innerHTML = "<h2>Foram gerados " + pontos.length + " valores!</h2>";
+
+            let trace = {
+                x : pontos,
+                y : new Array(pontos.length).join('0').split('').map(parseFloat),
+                mode: 'markers'
+            }
+
+
+            Plotly.newPlot('plotDiv', [trace], {})
+        }
+    </script>
+</body>
+</html>
