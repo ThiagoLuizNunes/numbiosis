@@ -54,10 +54,13 @@
                 x : pontos,
                 y : new Array(pontos.length).join('0').split('').map(parseFloat),
                 mode: 'markers'
-            }
+            };
 
+            let layout = {
+                title: "Todos os valores de ponto flutuante possíveis"
+            };
 
-            Plotly.newPlot('plotDiv', [trace], {})
+            Plotly.newPlot('plotDiv', [trace], layout)
         }
     </script>
 </body>
