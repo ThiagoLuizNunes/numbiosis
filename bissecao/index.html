@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bisseção</title>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Bisseção</h1>
+    
+    <form>
+        Função:
+        <br>
+        <input id='funcao' type="text">
+        <br>
+        Extremo A:
+        <br>
+        <input id='exA' type="number">
+        <br>
+        Extremo B:
+        <br>
+        <input id='exB' type="number">
+        <br>
+        Erro Mínimo:
+        <br>
+        <input id='erro' type="number">
+        <br>
+        Máximo de Iterações
+        <br>
+        <input id='maxIt' type="number">
+    </form>
+    <button onclick="plot()">Calcular!</button>
+    
+    <div id="result"></div>
+    <div id="plotDiv"></div>
+    <script>
+        function plot() {
+            let funcao = document.getElementById('funcao').value;
+            let exA = document.getElementById('exA').value;
+            let exB = document.getElementById('exB').value;
+            let erro = document.getElementById('erro').value;
+            let maxIt = document.getElementById('maxIt').value;
+
+            if(funcao === '' || exA === '' || exB === '' || erro === '' || maxIt === ''){
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            let results = bissecao(funcao, parseFloat(exA),
+                                   parseFloat(exB), parseFloat(erro),
+                                   parseInt(maxIt));
+
+            let divResult = document.getElementById('result');
+            document.innerHTML = '';
+
+            if(results) {
+                divResult.innerHTML = results.xm ? "<h2>A solução aproximada encontrada foi: " + results.xm + "</h2>" : "";
+            
+                let colors = (tam) => {
+                                let colors = [];
+                                for(let i = 0; i < tam; i++) {
+                                    colors.push(i);
+                                }
+                                return colors;
+                            }
+
+                let trace = {
+                    x: results.xm_s,
+                    y: results.fxm_s,
+                    mode: 'markers',
+                    marker: {
+                        size: 10,
+                        color: colors(results.xm_s.length),
+                        colorbar: {x: -0.155}
+                    },
+                };
+
+                let layout = {
+                    title: "Aproximações da Raiz da Equação",
+                }   
+
+                Plotly.newPlot('plotDiv', [trace], layout);
+            }
+            
+        }
+    </script>
+</body>
+</html>
