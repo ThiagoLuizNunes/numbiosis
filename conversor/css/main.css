@@ -1,0 +1,29 @@
+
+.containerFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerBorder {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 10px;
+    width: 50%;
+}
+
+.containerFlex span {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+.containerFlex input {
+    width: 50%;
+    height: 30px;
+    text-align: center;
+    font-size: 13pt;
+}
