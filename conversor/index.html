@@ -6,35 +6,48 @@
     <title>Conversor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="js/main.js"></script>  
 </head>
 <body>
-    <div class="containerFlex">
-        <div class="containerFlex containerBorder">
-                <h1>Conversor</h1>
-                <span>Decimal (10)</span>
-                <input id="decimalInput"
-                        type="text"
-                        oninput="changeDecimal()"/>
-            
-                <span>Binário (2)</span>
-                <input id="binaryInput"
-                        type="text"
-                        oninput="changeBinary()"/>
-        
-                <span>Octal (8)</span>
-                <input id="octalInput"
-                        type="text"
-                        oninput="changeOctal()"/>
-        
-                <span>Hexadecimal (16)</span>
-                <input id="hexaInput"
-                        type="text"
-                        oninput="changeHexa()"/>
-                
-            </div>
-    </div>
-    
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper teal lighten-2">
+        <a href="https://github.com/Vnicius/calculo-numerico"
+            class="brand-logo center"
+            target="blank">
+            Conversor Numérico
+        </a>
+        <!-- <ul id="nav-mobile" class="left hide-on-med-and-down">
+          <li><a href="sass.html">Repositório</a></li>
+        </ul> -->
+      </div>
+    </nav>
+  </div>
+  <div class="containerFlex">
+    <span>Decimal (10)</span>
+    <input id="decimalInput"
+            type="number"
+            oninput="changeDecimal()"/>
 
+    <span>Binário (2)</span>
+    <input id="binaryInput"
+            type="number"
+            oninput="changeBinary()"/>
+
+    <span>Octal (8)</span>
+    <input id="octalInput"
+            type="number"
+            oninput="changeOctal()"/>
+
+    <span>Hexadecimal (16)</span>
+    <input id="hexaInput"
+            type="text"
+            oninput="changeHexa()"/>
+          
+  </div>
 </body>
 </html>
