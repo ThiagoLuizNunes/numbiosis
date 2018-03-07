@@ -5,37 +5,45 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bisseção</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/main.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <h1>Bisseção</h1>
-    
-    <form>
-        Função:
-        <br>
-        <input id='funcao' type="text">
-        <br>
-        Extremo A:
-        <br>
-        <input id='exA' type="number">
-        <br>
-        Extremo B:
-        <br>
-        <input id='exB' type="number">
-        <br>
-        Erro Mínimo:
-        <br>
-        <input id='erro' type="number">
-        <br>
-        Máximo de Iterações
-        <br>
-        <input id='maxIt' type="number">
-    </form>
-    <button onclick="plot()">Calcular!</button>
-    
-    <div id="result"></div>
+    <div class="navbar-fixed">
+        <nav>
+          <div class="nav-wrapper teal lighten-2">
+            <a href="https://github.com/Vnicius/calculo-numerico"
+               class="brand-logo center"
+               target="blank">
+               Bisseção
+            </a>
+            <!-- <ul id="nav-mobile" class="left hide-on-med-and-down">
+              <li><a href="sass.html">Repositório</a></li>
+            </ul> -->
+          </div>
+        </nav>
+      </div>
+    <div class="containerFlex">
+      <span>Função</span>
+      <input id='funcao' type="text">
+      <span>Extremo A</span>
+      <input id='exA' type="number">
+      <span>Extremo B</span>
+      <input id='exB' type="number">
+      <span>Erro Mínimo</span>
+      <input id='erro' type="number">
+      <span>Máximo de Interações</span>
+      <input id='maxIt' type="number">
+      <a class="waves-effect waves-light btn-large" onclick="plot()">Buscar Raiz</a>
+      <div id="result"></div>
+    </div>
+
     <div id="plotDiv"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
         function plot() {
             let funcao = document.getElementById('funcao').value;
@@ -57,7 +65,11 @@
             document.innerHTML = '';
 
             if(results) {
-                divResult.innerHTML = results.xm ? "<h2>A solução aproximada encontrada foi: " + results.xm + "</h2>" : "";
+                divResult.innerHTML = results.xm
+                                      ? "<h4>A solução aproximada encontrada foi: "
+                                        + results.xm 
+                                        + "</h4>" 
+                                      : "";
             
                 let colors = (tam) => {
                                 let colors = [];
