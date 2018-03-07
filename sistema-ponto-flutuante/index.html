@@ -4,24 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="js/main.js"></script>
     <title>Sistema de Ponto Flutuante</title>
 </head>
 <body>
-    <form>
-        Precisão: <br>
+    <div class="navbar-fixed">
+        <nav>
+        <div class="nav-wrapper teal lighten-2">
+            <a href="https://github.com/Vnicius/calculo-numerico"
+            class="brand-logo center"
+            target="blank">
+            Pontos Flutuantes
+            </a>
+            <!-- <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="sass.html">Repositório</a></li>
+            </ul> -->
+        </div>
+        </nav>
+    </div>
+    <div class="containerFlex">
+        <span>Precisão</span>
         <input id='precisao' type="number">
-        <br>
-        Limite Underflow: <br>
+        <span>Limite Underflow</span>
         <input id='underflow' type="number">
-        <br>
-        Limite Overflow: <br>
+        <span>Limite Overflow</span>
         <input id='overflow' type="number">
-    </form>
-        <button onclick="plot()">Calcular</button>
-    
-    <div id='quantidade'></div>
+        <a class="waves-effect waves-light btn-large" onclick="plot()">Gerar Valores</a>
+        <div id='quantidade'></div>
+    </div>
+   
     <div id="plotDiv"></div>
     <script>
         function plot() {
@@ -48,7 +64,7 @@
             
             let pontos = pontosFlutuantes(10, precisao, underflow, overflow);
 
-            labelQuant.innerHTML = "<h2>Foram gerados " + pontos.length + " valores!</h2>";
+            labelQuant.innerHTML = "<h4>Foram gerados " + pontos.length + " valores!</h4>";
 
             let trace = {
                 x : pontos,

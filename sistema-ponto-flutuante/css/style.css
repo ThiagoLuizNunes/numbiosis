@@ -1,0 +1,35 @@
+.containerFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.containerFlex span {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+.containerFlex input {
+    width: 50%;
+    height: 30px;
+    text-align: center;
+    font-size: 14pt;
+}
+
+@media (min-width: 1025px){
+    .containerFlex{
+        padding-left: 30%;
+        padding-right: 30%;
+    }
+}
+
+@media (max-width:700px) {
+    .brand-logo {
+        font-size: 14pt !important;
+    }
+}
