@@ -116,14 +116,16 @@ class Binary extends Conversor{
             case 8:
             case 16:
                 let dec = this.binToDecimal(number);
+                console.log("DEC: " + dec);
+                console.log("OUTRO: " + this.decimalObj.convert(dec.toString(), tgtBase))
                 return dec 
                        ? this.decimalObj.convert(dec.toString(), tgtBase)
-                       : "";
+                       : "0";
 
             case 10:
                 let ret = this.binToDecimal(number);
 
-                return ret ? ret : "";
+                return ret ? ret : "0";
         }
     }
 
@@ -143,9 +145,12 @@ class Binary extends Conversor{
                 return "";
 
             case 10:
-                let ret = this.floatBinToDecimal(number);
+                let ret = this.floatBinToDecimal(number).toString();
+                
+                if(ret !== '0')
+                    ret = '.' + ret.slice(ret.indexOf('.') + 1)
 
-                return ret ? ret : "";
+                return ret !== "0" ? ret : "";
         }
     }
 
@@ -202,12 +207,12 @@ class Octal extends Conversor{
 
                 return dec
                         ? this.decimalObj.convert(dec.toString(), tgtBase)
-                        : "";
+                        : "0";
 
             case 10:
                 let ret = this.octToDecimal(number);
 
-                return ret ? ret : "";
+                return ret ? ret : "0";
         }
     }
 
@@ -226,9 +231,12 @@ class Octal extends Conversor{
                     return "";
                 }
             case 10:
-                let ret = this.floatOctalToDecimal(number);
+                let ret = this.floatOctalToDecimal(number).toString();
 
-                return ret ? ret : "";
+                if (ret !== '0')
+                    ret = '.' + ret.slice(ret.indexOf('.') + 1)
+
+                return ret !== "0" ? ret : "";
         }
         
     }
@@ -285,12 +293,12 @@ class Hexadecimal extends Conversor{
                 let dec = this.hexaToDecimal(number);
                 return dec 
                         ? this.decimalObj.convert(dec.toString(), tgtBase)
-                        : "";
+                        : "0";
             
             case 10:
                 let ret = this.hexaToDecimal(number);
 
-                return ret ? ret : "";
+                return ret ? ret : "0";
         }
     }
 
@@ -302,7 +310,7 @@ class Hexadecimal extends Conversor{
             case 2:
             case 8:
                 let dec = this.floatHexaToDecimal(number).toString();
-                
+
                 if(dec !== "0"){
                     let index = dec.indexOf('.')
                     dec = dec.slice(index + 1);
@@ -313,9 +321,12 @@ class Hexadecimal extends Conversor{
                 return "";
                 
             case 10:
-                let ret = this.floatHexaToDecimal(number);
+                let ret = this.floatHexaToDecimal(number).toString();
+                
+                if (ret !== '0')
+                    ret = '.' + ret.slice(ret.indexOf('.') + 1)
 
-                return ret ? ret : "";
+                return ret !== '0' ? ret : "";
         }
     }
 
