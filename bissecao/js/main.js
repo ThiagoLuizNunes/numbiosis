@@ -7,10 +7,23 @@ function bissecao(f, a, b, tol, N){
             tol -> Tolerância de erro
             N -> Quantidade máxima de iterações
     */
-    // TODO: Regex para cos, sin, tan e exp
-    // TODO: Regex de encontrar variável
-  
-    let variavel = 'c';
+    
+    // Adicionar a chamada do método correspondente de Math
+    f = f.replace(/(cos|sin|tan|exp)/, 'Math.$1');
+
+    // Expressão regular para isolar a variável da função
+    let regexVar = /([a-zA-Z][\w]*) ?([\+\-\/*]|$|\))/
+    
+    let variavel = regexVar.exec(f);
+
+    // Caso não encontre a variável
+    if(!variavel) {
+        alert('Não foi possível encontrar a variável!');
+    }
+
+    // Remove símbolos
+    variavel = variavel[0].replace(/\W+/, '');
+
     tol = parseFloat(tol).toFixed(20);
     // Criando uma arrow function a partir da string
     f = eval('('+ variavel +') => ' + f);
