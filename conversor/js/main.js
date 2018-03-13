@@ -4,14 +4,37 @@ const hexaToInt = {'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15};
 // Classe pai para conversão
 
 class Conversor{
+    constructor(regex) {
+        this.regex = regex;
+    }
+
+    preProcessing(number) {
+        return number.replace(new RegExp(',', 'g'),'');
+    }
+
+    check(number) {
+        return this.regex.exec(number)
+               ? true
+               : false
+    }
+
     convert (number, tgtBase) {
-        let dot = number.indexOf(".");
+
+        number = this.preProcessing(number);
+        
+        if(!this.check(number)){
+            return '';
+        }
+
+        let dot = 0;
         let negative = '';
 
         if(number[0] === '-') {
             negative = '-';
             number = number.slice(1);
         }
+
+        dot = number.indexOf(".");
 
         if (dot < 0) {
             return negative + this.intPart(number, tgtBase);
@@ -34,16 +57,7 @@ class Conversor{
 class Decimal extends Conversor{
 
     constructor() {
-        super();
-        this.re = new RegExp('^-?[0-9]+\.?[0-9]*$');
-    }
-
-    convert(number, tgtBase) {
-        if(this.re.exec(number)){
-            return super.convert(number, tgtBase);
-        } else {
-            return "";
-        }
+        super(new RegExp('^-?[0-9]+\.?[0-9]*$'));
     }
 
     intPart (number, tgtBase) {
@@ -98,17 +112,8 @@ class Decimal extends Conversor{
 
 class Binary extends Conversor{
     constructor() {
-        super();
+        super(new RegExp('^-?[0-1]+\.?[0-1]*$'));
         this.decimalObj = new Decimal();
-        this.re = new RegExp('^-?[0-1]+\.?[0-1]*$');
-    }
-
-    convert(number, tgtBase) {
-        if(this.re.exec(number)){
-            return super.convert(number, tgtBase);
-        } else {
-            return "";
-        }
     }
 
     intPart (number, tgtBase) {
@@ -116,8 +121,6 @@ class Binary extends Conversor{
             case 8:
             case 16:
                 let dec = this.binToDecimal(number);
-                console.log("DEC: " + dec);
-                console.log("OUTRO: " + this.decimalObj.convert(dec.toString(), tgtBase))
                 return dec 
                        ? this.decimalObj.convert(dec.toString(), tgtBase)
                        : "0";
@@ -185,17 +188,8 @@ class Binary extends Conversor{
 class Octal extends Conversor{
 
     constructor() {
-        super();
+        super(new RegExp('^-?[0-7]+\.?[0-7]*$'));
         this.decimalObj = new Decimal();
-        this.re = new RegExp('^-?[0-7]+\.?[0-7]*$');
-    }
-
-    convert(number, tgtBase) {
-        if(this.re.exec(number)){
-            return super.convert(number, tgtBase);
-        } else {
-            return "";
-        }
     }
 
     intPart (number, tgtBase) {
@@ -270,17 +264,8 @@ class Octal extends Conversor{
 class Hexadecimal extends Conversor{
 
     constructor() {
-        super();
+        super(new RegExp('^-?([0-9]|[a-fA-F])+\.?([0-9]|[a-fA-F])*$'));
         this.decimalObj = new Decimal();
-        this.re = new RegExp('^-?([0-9]|[a-fA-F])+\.?([0-9]|[a-fA-F])*$');
-    }
-
-    convert(number, tgtBase) {
-        if(this.re.exec(number)){
-            return super.convert(number, tgtBase);
-        } else {
-            return "";
-        }
     }
 
     intPart (number, tgtBase) {
