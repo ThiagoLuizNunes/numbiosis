@@ -35,7 +35,7 @@ class Decimal extends Conversor{
 
     constructor() {
         super();
-        this.re = new RegExp('^[0-9]+\.?[0-9]*$');
+        this.re = new RegExp('^-?[0-9]+\.?[0-9]*$');
     }
 
     convert(number, tgtBase) {
@@ -100,7 +100,7 @@ class Binary extends Conversor{
     constructor() {
         super();
         this.decimalObj = new Decimal();
-        this.re = new RegExp('^[0-1]+\.?[0-1]*$');
+        this.re = new RegExp('^-?[0-1]+\.?[0-1]*$');
     }
 
     convert(number, tgtBase) {
@@ -187,7 +187,7 @@ class Octal extends Conversor{
     constructor() {
         super();
         this.decimalObj = new Decimal();
-        this.re = new RegExp('^[0-7]+\.?[0-7]*$');
+        this.re = new RegExp('^-?[0-7]+\.?[0-7]*$');
     }
 
     convert(number, tgtBase) {
@@ -272,7 +272,7 @@ class Hexadecimal extends Conversor{
     constructor() {
         super();
         this.decimalObj = new Decimal();
-        this.re = new RegExp('^([0-9]|[a-fA-F])+\.?([0-9]|[a-fA-F])*$');
+        this.re = new RegExp('^-?([0-9]|[a-fA-F])+\.?([0-9]|[a-fA-F])*$');
     }
 
     convert(number, tgtBase) {
