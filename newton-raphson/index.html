@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Método Newton-Raphson</title>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</head>
+<body>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper teal lighten-2">
+            <a href="https://github.com/Vnicius/calculo-numerico" class="brand-logo center" target="blank">
+                Newton-Raphson
+            </a>
+            <!-- <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="sass.html">Repositório</a></li>
+          </ul> -->
+        </div>
+      </nav>
+    </div>
+    <div class="containerFlex">
+      <span>Função</span>
+      <input type="text" id="funcao" placeholder="Ex: exp(-x) - x">
+      <span>Valor Inicial</span>
+      <input type="number" id="valorInicial" placeholder="Ex: 0">
+      <span>Erro Mínimo</span>
+      <input type="number" id="erro" placeholder="Ex: 1e-8">
+      <span>Máximo de Iterações</span>
+      <input type="number" id="maxIteracoes" placeholder="Ex: 5">
+      <a class="waves-effect waves-light btn-large" onclick="plot()">Buscar Raiz</a>
+      <div id="result"></div>
+    </div>
+
+    <div id="plotDiv"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+      function plot() {
+        let elementValue = (id) => document.getElementById(id).value;
+        let funcao = elementValue("funcao");
+        let vInicial = elementValue("valorInicial");
+        let erro = elementValue("erro");
+        let iteracoes = elementValue("maxIteracoes");
+
+        if(funcao === "" || vInicial === "" || erro === "" || iteracoes === "") {
+          alert("Preencha todos os campos!");
+          return;
+        }
+
+        let divResult = document.getElementById('result');
+        let result = newtonRaphson(funcao,
+                                   parseFloat(vInicial),
+                                   parseFloat(erro),
+                                   parseInt(iteracoes));
+        
+        if(result.x) {
+          divResult.innerHTML =  "<h4>O valor aproximado encontrado foi " + result.x + "</h4>";
+        } else {
+          divResult.innerHTML = "";
+          return;
+        }
+        
+        // mapeamento das cores
+        let colors = (tam) => {
+          let colors = [];
+          for (let i = 0; i < tam; i++) {
+            colors.push(i);
+          }
+          return colors;
+        }
+
+        let trace = {
+          x: result.xk_s,
+          y: result.fxk_s,
+          mode: 'markers',
+          marker: {
+            size: 10,
+            color: colors(result.xk_s.length),
+            colorbar: { x: -0.155 }
+          },
+        };
+
+        let layout = {
+          title: "Aproximações da Raiz da Equação",
+        }
+
+        Plotly.newPlot('plotDiv', [trace], layout);
+
+      }
+    </script>
+</body>
+</html>
