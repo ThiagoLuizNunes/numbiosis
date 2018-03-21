@@ -42,23 +42,29 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
       function plot() {
+        
+        // pegar os valores dos inputs
         let elementValue = (id) => document.getElementById(id).value;
         let funcao = elementValue("funcao");
         let vInicial = elementValue("valorInicial");
         let erro = elementValue("erro");
         let iteracoes = elementValue("maxIteracoes");
-
+        
+        // verifica se tem algum campo vazio
         if(funcao === "" || vInicial === "" || erro === "" || iteracoes === "") {
           alert("Preencha todos os campos!");
           return;
         }
 
         let divResult = document.getElementById('result');
+
+        // chama a funçãp
         let result = newtonRaphson(funcao,
                                    parseFloat(vInicial),
                                    parseFloat(erro),
                                    parseInt(iteracoes));
         
+        // preeche o título com o resultado
         if(result.x) {
           divResult.innerHTML =  "<h4>O valor aproximado encontrado foi " + result.x + "</h4>";
         } else {
@@ -75,6 +81,7 @@
           return colors;
         }
 
+        // dados para a plotagem
         let trace = {
           x: result.xk_s,
           y: result.fxk_s,

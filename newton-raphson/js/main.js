@@ -7,12 +7,20 @@ function newtonRaphson(f, xk, tol, N) {
             N -> Quantidade máxima de iterações
     */
 
+    /*
+        f -> exp(-x) - x
+        xk -> 0
+        tol -> 1e-8
+        N -> 10
+    */
+
     // Adicionar a chamada do método correspondente de Math
     f = f.replace(/(cos|sin|tan|exp)/, 'Math.$1');
 
     // Expressão regular para isolar a variável da função
     let regexVar = /([a-zA-Z][\w]*) ?([\+\-\/*]|$|\))/
 
+    // tenta identificar a variável da função
     let variavel = regexVar.exec(f);
 
     // Caso não encontre a variável
@@ -23,7 +31,9 @@ function newtonRaphson(f, xk, tol, N) {
     // Remove símbolos
     variavel = variavel[0].replace(/\W+/, '');
 
+    // converte a tolerância
     tol = parseFloat(tol).toFixed(20);
+    
     // Criando uma arrow function a partir da string
     f = eval('(' + variavel + ') => ' + f);
 
@@ -53,6 +63,7 @@ function newtonRaphson(f, xk, tol, N) {
     while ((Math.abs(xk - xk_ln) > tol) && (k < N)) {
         xk = xk_ln
         xk_ln = xk - (f(xk) / f_ln(xk))
+
         xk_s.push(xk_ln);
         fxk_s.push(f(xk_ln));
 
@@ -64,6 +75,7 @@ function newtonRaphson(f, xk, tol, N) {
 }
 
 function getDerivada(f) {
+    // retorna o calculo aproximado do derivada da função
     let h = 0.001
     return (x) => (f(x + h) - f(x - h)) / (2 * h);
 }
