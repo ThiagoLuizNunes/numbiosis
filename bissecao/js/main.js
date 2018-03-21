@@ -7,13 +7,30 @@ function bissecao(f, a, b, tol, N){
             tol -> Tolerância de erro
             N -> Quantidade máxima de iterações
     */
+
+    /*
+        Ex1:
+            f -> -42 + 686.7*(1 - exp(-6*c/35))/c
+            a -> 12
+            b -> 16
+            tol -> 1e-5
+            N -> 100
+        
+        Ex2:
+            f -> -0.016 + (x + 4)/((-2*x + 42)**2*(-x + 28))
+            a -> 0
+            b -> 20
+            tol -> 5e-3
+            N -> 100
+    */
     
     // Adicionar a chamada do método correspondente de Math
     f = f.replace(/(cos|sin|tan|exp)/, 'Math.$1');
 
     // Expressão regular para isolar a variável da função
-    let regexVar = /([a-zA-Z][\w]*) ?([\+\-\/*]|$|\))/
+    let regexVar = /([a-zA-Z][\w]*) ?([\+\-\/\*]|$|\))/
     
+    // tentativa de identificar a variável
     let variavel = regexVar.exec(f);
 
     // Caso não encontre a variável
@@ -21,10 +38,12 @@ function bissecao(f, a, b, tol, N){
         alert('Não foi possível encontrar a variável!');
     }
 
-    // Remove símbolos
+    // Remove símbolos inválidos da variável
     variavel = variavel[0].replace(/\W+/, '');
 
+    // converte o erro para valor
     tol = parseFloat(tol).toFixed(20);
+
     // Criando uma arrow function a partir da string
     f = eval('('+ variavel +') => ' + f);
 
@@ -60,11 +79,12 @@ function bissecao(f, a, b, tol, N){
     let xm_s = [];
     let fxm_s = [];
 
-    while ( (Math.abs(a-b) > tol) && (!done || i < N)) {
+    while ((Math.abs(a-b) > tol) && (!done || i < N)) {
         fxm = f(xm);
         xm_s.push(xm);
         fxm_s.push(fxm);
-        console.log("(i = " + i + ") f(xm)=  "+ fxm +" | f(a)= "+fa+" | f(b)= "+fb);
+
+        console.log("(i = " + i + ") f(xm)=  " + fxm + " | f(a)= " + fa + " | f(b)= " + fb);
 
         if(fa*fxm < 0) {
             b = xm;

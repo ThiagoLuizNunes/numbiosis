@@ -45,31 +45,37 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
         function plot() {
+            // pegar os valores dos inputs
             let funcao = document.getElementById('funcao').value;
             let exA = document.getElementById('exA').value;
             let exB = document.getElementById('exB').value;
             let erro = document.getElementById('erro').value;
             let maxIt = document.getElementById('maxIt').value;
-
+            
+            // verifica se algum campo está vazio
             if(funcao === '' || exA === '' || exB === '' || erro === '' || maxIt === ''){
                 alert('Preencha todos os campos!');
                 return;
             }
             
+            // chama a função de bisseção
             let results = bissecao(funcao, parseFloat(exA),
                                    parseFloat(exB), parseFloat(erro),
                                    parseInt(maxIt));
-
+            
+            // pega os resultados separadamente
             let divResult = document.getElementById('result');
             document.innerHTML = '';
-
+            
             if(results) {
+                // Preenche o texto com o resultado
                 divResult.innerHTML = results.xm
                                       ? "<h4>A solução aproximada encontrada foi: "
                                         + results.xm 
                                         + "</h4>" 
                                       : "";
-            
+                
+                // gera o mapeamento das cores
                 let colors = (tam) => {
                                 let colors = [];
                                 for(let i = 0; i < tam; i++) {
@@ -77,7 +83,8 @@
                                 }
                                 return colors;
                             }
-
+                
+                // Informações para a plotagem
                 let trace = {
                     x: results.xm_s,
                     y: results.fxm_s,
