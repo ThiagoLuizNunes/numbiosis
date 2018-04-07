@@ -1,14 +1,14 @@
 .cards-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 h2 {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* @media (max-width:700px) {
@@ -17,14 +17,14 @@ h2 {
     }
 } */
 
-@media (min-width: 1000px){
-    .card{
-        width: 70vh;
-    }
+@media (min-width: 1000px) {
+  .card {
+    width: 70vh;
+  }
 }
 
-@media (min-width: 1025px){
-    .card{
-        width: 100vh;
-    }
+@media (min-width: 1025px) {
+  .card {
+    width: 100vh;
+  }
 }
