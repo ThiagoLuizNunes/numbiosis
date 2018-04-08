@@ -6,7 +6,7 @@
   padding: 10px;
 }
 
-.containerFlex span {
+.containerFlex .span-text {
   text-align: center;
   display: block;
   margin-top: 10px;
@@ -14,11 +14,25 @@
   font-weight: bold;
 }
 
-.containerFlex select {
+.containerFlex input {
   width: 50%;
   height: 30px;
   text-align: center;
   font-size: 14pt;
+}
+
+#matrix {
+  display: flex;
+  align-self: auto;
+  align-items: center;
+}
+
+.matrix-table {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-radius: 3px !important;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 @media (min-width: 1025px) {
