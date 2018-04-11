@@ -30,6 +30,13 @@
   padding: 15px;
 }
 
+.step-matrix {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .matrix {
   border-left: 2px solid black;
   border-right: 2px solid black;
@@ -70,6 +77,22 @@
 .step-content .matrix {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.equations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+
+.equation {
+  margin: 10px;
+}
+
+.katex{
+  font-size: 20pt !important;
 }
 
 @media (min-width: 1025px) {
