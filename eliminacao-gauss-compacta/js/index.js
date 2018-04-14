@@ -25,9 +25,9 @@ function gaussElimiation() {
 
   let matrixLU = copyMatrix(origin);
   //getLUMatrix(matrixLU, 'u', 2);
-  addStep(title = "Matriz inicial", matrix = origin)
+  addStep(title = "Matriz inicial", matrix = maTex(origin, 'A ='))
 
-  let lower = [];
+  /*let lower = [];
   let upper = [];
 
   for (let i = 0; i < origin.length; i++) {
@@ -46,11 +46,11 @@ function gaussElimiation() {
     upper.push(rowU);
   }
   // primeira linha da U
-  upper[0] = origin[0];
+  upper[0] = origin[0];*/
 
   //console.log("uij = aij; j = 1, 2, ..., n");
   addStep(title = "Linha 1 da Matriz U",
-    matrix = getLUMatrix(matrixLU, 'u', 0),
+    matrix = maTex(getLUMatrix(matrixLU, 'u', 0), "U = "),
     [katex.renderToString("\\boxed{" + underIndex('u', 'ij') + " = "
       + "	\\kern0.1em " + underIndex('a', 'ij')
       + " \\footnotesize ;\\kern0.1em j = 1, 2,..., n}")]);
@@ -74,7 +74,10 @@ function gaussElimiation() {
       + " = " + matrixLU[i][0]))
   }
 
-  addStep(title = "Coluna 1 da Matriz L", matrix = getLUMatrix(matrixLU, 'l', 0), equations);
+  addStep(title = "Coluna 1 da Matriz L",
+    matrix = maTex(getLUMatrix(matrixLU, 'l', 0), "L = "),
+    equations
+  );
 
   // a partir da segunda linha e segunda coluna
   let wasCalc = false;
@@ -112,8 +115,6 @@ function gaussElimiation() {
       //upper[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
       matrixLU[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
 
-      console.log(origin[i][j])
-
       factorEq = factorEq.slice(0, -3) + '\\raisebox{0em}{)}';
       factorEqWValues = factorEqWValues.slice(0, -3) + ')';
 
@@ -138,7 +139,10 @@ function gaussElimiation() {
     }
 
     if (wasCalc) {
-      addStep(title = 'Linha ' + (i + 1) + ' da Matriz U', matrix = getLUMatrix(matrixLU, 'u', i), finalEquations);
+      addStep(title = 'Linha ' + (i + 1) + ' da Matriz U',
+        matrix = maTex(getLUMatrix(matrixLU, 'u', i), 'U ='),
+        finalEquations
+      );
       wasCalc = false;
     }
 
@@ -202,7 +206,10 @@ function gaussElimiation() {
     }
 
     if (wasCalc) {
-      addStep(title = "Coluna " + (i + 1) + " da L", matrix = getLUMatrix(matrixLU, 'l', i), finalEquations);
+      addStep(title = "Coluna " + (i + 1) + " da L",
+        matrix = maTex(getLUMatrix(matrixLU, 'l', i), 'L ='),
+        finalEquations
+      );
     }
   }
 
@@ -290,15 +297,9 @@ function hideSteps() {
   steps.innerHTML = "";
 }
 
-function addStepsSet(set) {
-  set.forEach(element => {
-    addStep(element.getTitle(), element.getMatrix(), element.getEquations())
-  });
-}
-
-function addStep(title = '', matrix = [], equations = []) {
+function addStep(title = '', matrix = '', equations = []) {
   let show = document.getElementById('steps');
-  let fotmatedMatrix = '<div class="step-matrix">' + maTex(matrix) + '</div>'
+  let fotmatedMatrix = '<div class="step-matrix">' + matrix + '</div>'
   let step = ''
   let finalEquation = '';
 
@@ -313,7 +314,6 @@ function addStep(title = '', matrix = [], equations = []) {
   }
 
   step = stepSection(title, finalEquation + fotmatedMatrix);
-
   show.innerHTML += step;
 }
 
