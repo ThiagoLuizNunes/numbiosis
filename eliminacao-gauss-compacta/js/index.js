@@ -1,36 +1,16 @@
-class Step {
-  constructor(title="", matrix=[], equations=[]) {
-    this.title = title;
-    this.matrix = matrix;
-    this.equations = equations;
-  }
+function copyMatrix(matrix) {
+  let out = [];
 
-  setTitle(title) {
-    this.title = title;
-  }
+  matrix.forEach(element => {
+    aux = [];
+    for (let i = 0; i < element.length; i++) {
+      aux.push(element[i]);
+    }
+    out.push(aux)
+  })
 
-  setMatrix(matrix) {
-    this.matrix = matrix;
-  }
-
-  setEquations(equations) {
-    this.equations = equations;
-  }
-
-  getTitle() {
-    return this.title;
-  }
-
-  getMatrix() {
-    return this.matrix;
-  }
-
-  getEquations() {
-    return this.equations;
-  }
+  return out;
 }
-
-//##################################################//
 
 function gaussElimiation() {
   //let show = document.getElementById('steps');
@@ -41,62 +21,60 @@ function gaussElimiation() {
     //return;
   }
 
-  origin = [[5,2,1], [3,1,4], [1,1,3]];
+  origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
 
-  let steps = []
-  let step;
-  steps.push(new Step("Matriz inicial", origin))
+  let matrixLU = copyMatrix(origin);
+  //getLUMatrix(matrixLU, 'u', 2);
+  addStep(title = "Matriz inicial", matrix = origin)
 
   let lower = [];
   let upper = [];
 
-  for(let i = 0; i < origin.length; i++) {
+  for (let i = 0; i < origin.length; i++) {
     let rowL = [];
     let rowU = [];
-    for(let j = 0; j < origin[i].length; j++) {
-      if(j >= i) {
+    for (let j = 0; j < origin[i].length; j++) {
+      if (j >= i) {
         rowL.push(0);
-        rowU.push("\\raisebox{0.25em}{u}\\tiny " + (i + 1) + "" + (j + 1))
+        rowU.push(underIndex('u', (i + 1) + "" + (j + 1)))
       } else {
-        rowL.push("\\raisebox{0.25em}{l}\\tiny " + (i + 1) + "" + (j + 1));
+        rowL.push(underIndex('l', (i + 1) + "" + (j + 1)))
         rowU.push(0)
       }
     }
     lower.push(rowL);
     upper.push(rowU);
   }
-
   // primeira linha da U
   upper[0] = origin[0];
 
   //console.log("uij = aij; j = 1, 2, ..., n");
-
-  steps.push(new Step("Linha 1 da Matriz U",
-                    upper,
-    [katex.renderToString("\\boxed{\\raisebox{0.25em}{u}\\tiny ij \\normalsize ="
-      +"	\\kern0.1em \\raisebox{0.25em}{a}\\tiny ij"
-      +" \\footnotesize ;\\kern0.1em j = 1, 2,..., n}")]));
-
-  //addStep("Linha 1 de U", upper,
-  //        [katex.renderToString("\\raisebox{0.25em}{u}ij =  \\raisebox{0.25em}{a}ij; j = 1, 2, ..., n")]);
+  addStep(title = "Linha 1 da Matriz U",
+    matrix = getLUMatrix(matrixLU, 'u', 0),
+    [katex.renderToString("\\boxed{" + underIndex('u', 'ij') + " = "
+      + "	\\kern0.1em " + underIndex('a', 'ij')
+      + " \\footnotesize ;\\kern0.1em j = 1, 2,..., n}")]);
 
   // primeir coluna da L
   let equations = [];
-  equations.push(katex.renderToString("\\boxed{\\raisebox{0.25em}{l}\\tiny i1 = "
-    +" \\frac{\\raisebox{0.25em}{a}\\tiny i1}{\\raisebox{0.25em}{u}\\tiny 11}"
+
+  equations.push(katex.renderToString("\\boxed{" + underIndex('l', 'i1') + " = "
+    + " \\frac{" + underIndex('a', 'i1') + "}{" + underIndex('u', '11') + "}"
     + "\\footnotesize ; i = 2,..., n}"))
 
-  for(let i = 1; i < origin[0].length; i++) {
-    lower[i][0] = Math.round((origin[i][0]/upper[0][0]) * 100)/ 100;
-    equations.push(katex.renderToString("\\raisebox{0.25em}{l}\\tiny " + (i + 1) + "1 \\normalsize = "
-      + " \\frac{" + origin[i][0] + "}{" + upper[0][0] +"}"
-      + " = " + lower[i][0]))
+  for (let i = 1; i < origin[0].length; i++) {
+    //lower[i][0] = Math.round((origin[i][0] / upper[0][0]) * 100) / 100;
+    matrixLU[i][0] = Math.round((origin[i][0] / matrixLU[0][0]) * 100) / 100;
+
+    //equations.push(katex.renderToString(underIndex('l', (i + 1) + "1") + " = "
+    //  + " \\frac{" + origin[i][0] + "}{" + upper[0][0] + "}"
+    //  + " = " + lower[i][0]))
+    equations.push(katex.renderToString(underIndex('l', (i + 1) + "1") + " = "
+      + " \\frac{" + origin[i][0] + "}{" + matrixLU[0][0] + "}"
+      + " = " + matrixLU[i][0]))
   }
 
-  steps.push(new Step("Coluna 1 da Matriz L", lower, equations));
-  //addStep("Coluna 1 de L", lower);
-
-  //console.log("lij = ai1/u11; i = 2 ,..., n")
+  addStep(title = "Coluna 1 da Matriz L", matrix = getLUMatrix(matrixLU, 'l', 0), equations);
 
   // a partir da segunda linha e segunda coluna
   let wasCalc = false;
@@ -107,11 +85,11 @@ function gaussElimiation() {
   let factorEq = '';
   let factorEqWValues = '';
 
-  for(let i = 1; i < origin.length; i++) {
+  for (let i = 1; i < origin.length; i++) {
     wasCalc = false;
     finalEquations = [];
     // próxima linha de U
-    for(let j = i; j < origin[i].length; j++) {
+    for (let j = i; j < origin[i].length; j++) {
       equation = '';
       equationWValues = '';
       equationResult = '';
@@ -119,96 +97,152 @@ function gaussElimiation() {
       factorEq = '\\raisebox{0em}{(}';
       factorEqWValues = '(';
 
-      for(let n = 0; n < i; n++) {
-        factor += lower[i][n] * upper[n][j];
-        //factorEq += "l" + (i + 1) + "" + (n + 1) + " * "
-        //  + "u" + (i + 1) + "" + (j + 1) + " + "
+      for (let n = 0; n < i; n++) {
+        //factor += lower[i][n] * upper[n][j];
+        factor += matrixLU[i][n] * matrixLU[n][j];
 
-        factorEq += '\\raisebox{0.25em}{l}\\tiny ' + (i + 1) + '' + (n + 1) 
-          + ' \\normalsize \\kern0.1em \\raisebox{0em}{*} \\kern0.1em'
-          + "\\raisebox{0.25em}{u}\\tiny " + (i + 1) + "" + (j + 1) + "\\small + ";
-        
-        factorEqWValues += lower[i][n] + ' * ' + upper[n][j] + '\\small + ';
+        factorEq += underIndex('l', (i + 1) + '' + (n + 1))
+          + ' \\kern0.1em \\raisebox{0em}{*} \\kern0.1em'
+          + underIndex('u', (n + 1) + '' + (j + 1)) + "\\small + ";
+
+        //factorEqWValues += lower[i][n] + ' * ' + upper[n][j] + '\\small + ';
+        factorEqWValues += matrixLU[i][n] + ' * ' + matrixLU[n][j] + '\\small + ';
       }
+
+      //upper[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
+      matrixLU[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
+
+      console.log(origin[i][j])
 
       factorEq = factorEq.slice(0, -3) + '\\raisebox{0em}{)}';
       factorEqWValues = factorEqWValues.slice(0, -3) + ')';
 
-      //equation = 'u' + (i + 1) + "" + (j + 1) + " = a" + (i + 1) + "" + (j + 1) + " - " + factorEq;
-      equation = '\\raisebox{0.25em}{u}\\tiny ' + (i + 1) + '' + (j + 1)
-        + '\\normalsize = \\kern0.1em \\raisebox{0.25em}{u}\\tiny ' + (i + 1) + "" + (j + 1)
-        + '\\normalsize \\raisebox{0em}{}\\kern0.1em - \\kern0.1em' + factorEq;
+      equation = underIndex('u', (i + 1) + '' + (j + 1))
+        + ' = \\kern0.1em ' + underIndex('a', (i + 1) + '' + (j + 1))
+        + '\\kern0.1em - \\kern0.1em' + factorEq;
 
-      equationWValues = '\\raisebox{0.25em}{u}\\tiny'
-        + (i + 1) + "" + (j + 1)
-        + "\\normalsize =" + origin[i][j] + " - " + factorEqWValues;
-      
-      upper[i][j] = Math.round((origin[i][j] - factor) * 100) / 100 ; 
+      equationWValues = underIndex('u', (i + 1) + '' + (j + 1))
+        + " = " + origin[i][j] + " - " + factorEqWValues;
 
-      //equationResult = 'u' + (i + 1) + "" + (j + 1) + " = " + upper[i][j];
-      equationResult = '\\raisebox{0.25em}{u}\\tiny ' + (i + 1) + '' + (j + 1)
-        + '\\normalsize =' + upper[i][j];
-
-      //console.log(equation + "\n" + equationWValues + "\n" + equationResult);
+      //equationResult = underIndex('u', (i + 1) + '' + (j + 1)) + '\\normalsize =' + upper[i][j];
+      equationResult = underIndex('u', (i + 1) + '' + (j + 1)) + ' = ' + matrixLU[i][j];
 
       finalEquations.push(katex.renderToString('\\begin{matrix} '
-        + equation 
+        + equation
         + ' \\\\ '
-        + equationWValues 
+        + equationWValues
         + ' \\\\ '
-        + equationResult 
+        + equationResult
         + '\\end{matrix}'));
       wasCalc = true;
     }
 
-    if(wasCalc) {
-      steps.push(new Step('Linha ' + (i + 1) + ' da Matriz U', upper, finalEquations));
-      // addStep("Linha " + (i + 1) + " da U", upper);
+    if (wasCalc) {
+      addStep(title = 'Linha ' + (i + 1) + ' da Matriz U', matrix = getLUMatrix(matrixLU, 'u', i), finalEquations);
       wasCalc = false;
     }
 
-    for(let j = i + 1; j < origin.length; j++) {
+    finalEquations = [];
+
+    for (let j = i + 1; j < origin.length; j++) {
       equation = '';
       equationWValues = '';
       equationResult = '';
       factor = 0;
-      factorEq = '(';
+      factorEq = '\\raisebox{0.25em}{(}';
       factorEqWValues = '';
 
-      for(let n = 0; n < i; n++) {
-        factor += lower[j][n] * upper[n][i];
+      for (let n = 0; n < i; n++) {
+        //factor += lower[j][n] * upper[n][i];
+        factor += matrixLU[j][n] * matrixLU[n][i];
 
-        factorEq += "l" + (j + 1) + "" + (n + 1) + " * "
-          + "u" + (n + 1) + "" + (i + 1) + " + "
+        factorEq += underIndex('l', (j + 1) + '' + (n + 1))
+          + ' \\kern0.1em \\raisebox{0em}{*} \\kern0.1em'
+          + underIndex('u', (n + 1) + '' + (i + 1)) + "\\small + ";
 
-        factorEqWValues += lower[j][n] + " * " + upper[n][i] + " + ";
+        //factorEqWValues += lower[j][n] + " * " + upper[n][i] + "\\small + ";
+        factorEqWValues += matrixLU[j][n] + " * " + matrixLU[n][i] + "\\small + ";
       }
 
-      factorEq = factorEq.slice(0, -3) + ")"
+      //lower[j][i] = Math.round(((origin[i][i] - factor) / upper[i][i]) * 100) / 100;
+      matrixLU[j][i] = Math.round(((origin[i][i] - factor) / matrixLU[i][i]) * 100) / 100;
+
+      factorEq = factorEq.slice(0, -3) + "\\raisebox{0em}{)}"
       factorEqWValues = factorEqWValues.slice(0, -3) + ")"
 
-      equation = 'l' + (j + 1) + "" + (i + 1) + " = a" + (i + 1) + "" + (i + 1) + " - " + factorEq + " / " + "u" + (i + 1) + "" + (i + 1);
-      equationWValues = 'l' + (i + 1) + "" + (i + 1) + " = " + origin[i][j] + " - " + factor + " / " + upper[i][i];
+      //equation = 'l' + (j + 1) + "" + (i + 1) + " = a" + (i + 1) + "" + (i + 1) + " - " + factorEq + " / " + "u" + (i + 1) + "" + (i + 1);
+      equation = underIndex('l', (j + 1) + '' + (i + 1))
+        + ' = ' + underIndex('a', (i + 1) + '' + (i + 1))
+        + ' - \\frac{' + factorEq + '}{'
+        + underIndex('u', (i + 1) + "" + (i + 1)) + '}';
 
-      lower[j][i] = Math.round(((origin[i][i] - factor)/ upper[i][i]) * 100)/100;
+      /*equationWValues = underIndex('l', (j + 1) + '' + (i + 1))
+        + " = " + origin[i][j]
+        + " - \\frac{" + factor + "}{ "
+        + upper[i][i] + "}";*/
 
-      equationResult = 'l' + (j + 1) + "" + (i + 1) + " = " + lower[j][i];
+      equationWValues = underIndex('l', (j + 1) + '' + (i + 1))
+        + " = " + origin[i][j]
+        + " - \\frac{" + factor + "}{ "
+        + matrixLU[i][i] + "}";
 
-      console.log(equation + "\n" + equationWValues + "\n" + equationResult);
+      //equationResult = underIndex('l', (j + 1) + '' + (i + 1)) + " = " + lower[j][i];
+      equationResult = underIndex('l', (j + 1) + '' + (i + 1)) + " = " + matrixLU[j][i];
+
+      //console.log(equation + "\n" + equationWValues + "\n" + equationResult);
+      finalEquations.push(katex.renderToString('\\begin{matrix} '
+        + equation
+        + ' \\\\ '
+        + equationWValues
+        + ' \\\\ '
+        + equationResult
+        + '\\end{matrix}'));
 
       wasCalc = true;
     }
 
-    if(wasCalc) {
-      //addStep("Coluna " + (i + 1) + " da L", lower);
+    if (wasCalc) {
+      addStep(title = "Coluna " + (i + 1) + " da L", matrix = getLUMatrix(matrixLU, 'l', i), finalEquations);
     }
   }
 
-  addStepsSet(steps)
+  //addStepsSet(steps)
   //stepContent = formMatrix([[1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10], [11,12,13,-14]]) + formMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   //step = stepSection('Teste de seção', stepContent);
   //show.innerHTML = step + step;
-} 
+}
+
+function getLUMatrix(matrix, type, iteration) {
+  let lu = [];
+
+  for (let i = 0; i < matrix.length; i++) {
+    let aux = [];
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (type === 'l' && j < i) {
+        if (j <= iteration) {
+          aux.push(matrix[i][j]);
+        } else {
+          aux.push(underIndex('j', (i + 1) + '' + (j + 1)));
+        }
+      } else if (type === 'u' && j >= i) {
+        if (i <= iteration) {
+          aux.push(matrix[i][j]);
+        } else {
+          aux.push(underIndex('u', (i + 1) + '' + (j + 1)));
+        }
+      } else {
+        aux.push('0');
+      }
+    }
+    lu.push(aux);
+  }
+
+  return lu;
+}
+
+function underIndex(letter, index) {
+  return '\\raisebox{0.25em}{' + letter + '}\\tiny ' + index + '\\normalsize \\raisebox{0em}{}'
+}
 
 function getTableValues() {
   /*
@@ -218,10 +252,10 @@ function getTableValues() {
   let values = []
   let rowValues = []
 
-  for(let i = 0; i < table.rows.length; i++) {
+  for (let i = 0; i < table.rows.length; i++) {
     rowValues = []
 
-    for(let j = 0; j < table.rows[i].cells.length; j++) {
+    for (let j = 0; j < table.rows[i].cells.length; j++) {
       let value = table.rows[i].cells[j].firstChild.value;
       if (value === '') {
         alert('A célula a' + (i + 1) + '' + (j + 1) + ' não possue valor!');
@@ -235,16 +269,16 @@ function getTableValues() {
   return values;
 }
 
-function stepSection(title, content){
+function stepSection(title, content) {
   /*
     Cria uma seção 'step'
   */
   let step = '<div class="step">';
-  
+
   step += '<div class="step-title"><h5>' + title + '</h5></div>';
   step += '<div class="step-content">' + content + '</div>';
   step += '</div>';
-  
+
   return step;
 }
 
@@ -262,28 +296,28 @@ function addStepsSet(set) {
   });
 }
 
-function addStep(title, matrix, equations = []) {
+function addStep(title = '', matrix = [], equations = []) {
   let show = document.getElementById('steps');
   let fotmatedMatrix = '<div class="step-matrix">' + maTex(matrix) + '</div>'
   let step = ''
   let finalEquation = '';
 
-  if(equations.length != 0) {
+  if (equations.length != 0) {
     finalEquation = '<div class="equations">';
 
-    for(let i = 0; i < equations.length; i++) {
+    for (let i = 0; i < equations.length; i++) {
       finalEquation += '<div class="equation">' + equations[i] + '</div>'
     }
 
     finalEquation += '</div>'
   }
-  
-  step = stepSection(title, fotmatedMatrix + finalEquation);
+
+  step = stepSection(title, finalEquation + fotmatedMatrix);
 
   show.innerHTML += step;
 }
 
-function maTex(matrix, prefix='') {
+function maTex(matrix, prefix = '') {
   let rows = [];
 
   matrix.forEach(element => {
@@ -357,8 +391,8 @@ function dimHandler() {
     Função para verificar a modificação de valores no input de dimensão da matriz
   */
   dim = document.getElementById("dim");
-  
-  if(dim.value !== ''){
+
+  if (dim.value !== '') {
     dimValue = parseInt(dim.value);
   }
 
