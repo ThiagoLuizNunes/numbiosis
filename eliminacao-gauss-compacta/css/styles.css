@@ -26,7 +26,7 @@
   padding-right: 20px;
 }
 
-.matrix-show td{
+.matrix-show td {
   padding: 15px;
 }
 
@@ -49,7 +49,8 @@
   margin-top: 30px;
 }
 
-#steps, .step {
+#steps,
+.step {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -74,7 +75,7 @@
   flex-wrap: wrap;
 }
 
-.step-content .matrix {
+.step-matrix {
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -91,13 +92,45 @@
   margin: 10px;
 }
 
-.katex{
+.katex {
   font-size: 20pt !important;
+  margin: 10px !important;
 }
 
 @media (min-width: 1025px) {
   .containerFlex {
     padding-left: 30%;
     padding-right: 30%;
+  }
+}
+
+@media (max-width: 400px) {
+  .brand-logo {
+    font-size: 9pt !important;
+  }
+}
+
+@media (min-width: 401px) and (max-width: 685px) {
+  .brand-logo {
+    font-size: 12pt !important;
+  }
+}
+
+@media (min-width: 686px) and (max-width: 850px) {
+  .brand-logo {
+    font-size: 16pt !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .step-content {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .step-matrix {
+    margin: 10px;
   }
 }

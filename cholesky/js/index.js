@@ -14,31 +14,28 @@ function gaussElimiation() {
 
   let matrixLU = copyMatrix(origin);
   //getLUMatrix(matrixLU, 'u', 2);
-  addStep(
-    (title = "Matriz inicial"),
-    (matrix = maTex(origin, "A =") + maTex(getLUMatrix(origin, "a"), "A ="))
-  );
+  addStep((title = "Matriz inicial"), (matrix = maTex(origin, "A =")));
 
   /*let lower = [];
-  let upper = [];
-
-  for (let i = 0; i < origin.length; i++) {
-    let rowL = [];
-    let rowU = [];
-    for (let j = 0; j < origin[i].length; j++) {
-      if (j >= i) {
-        rowL.push(0);
-        rowU.push(underIndex('u', (i + 1) + "" + (j + 1)))
-      } else {
-        rowL.push(underIndex('l', (i + 1) + "" + (j + 1)))
-        rowU.push(0)
+    let upper = [];
+  
+    for (let i = 0; i < origin.length; i++) {
+      let rowL = [];
+      let rowU = [];
+      for (let j = 0; j < origin[i].length; j++) {
+        if (j >= i) {
+          rowL.push(0);
+          rowU.push(underIndex('u', (i + 1) + "" + (j + 1)))
+        } else {
+          rowL.push(underIndex('l', (i + 1) + "" + (j + 1)))
+          rowU.push(0)
+        }
       }
+      lower.push(rowL);
+      upper.push(rowU);
     }
-    lower.push(rowL);
-    upper.push(rowU);
-  }
-  // primeira linha da U
-  upper[0] = origin[0];*/
+    // primeira linha da U
+    upper[0] = origin[0];*/
 
   //console.log("uij = aij; j = 1, 2, ..., n");
   addStep(
@@ -228,9 +225,9 @@ function gaussElimiation() {
         "}";
 
       /*equationWValues = underIndex('l', (j + 1) + '' + (i + 1))
-        + " = " + origin[i][j]
-        + " - \\frac{" + factor + "}{ "
-        + upper[i][i] + "}";*/
+          + " = " + origin[i][j]
+          + " - \\frac{" + factor + "}{ "
+          + upper[i][i] + "}";*/
 
       equationWValues =
         underIndex("l", j + 1 + "" + (i + 1)) +
@@ -271,36 +268,21 @@ function gaussElimiation() {
     }
   }
 
-  addStep(
-    (title = "Matrizes L e U"),
-    (matrix =
-      maTex(getLUMatrix(matrixLU, "l", matrixLU.length - 2), "L =") +
-      maTex(getLUMatrix(matrixLU, "u", matrixLU.length - 1), "U ="))
-  );
-
   //addStepsSet(steps)
   //stepContent = formMatrix([[1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10], [11,12,13,-14]]) + formMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   //step = stepSection('Teste de seção', stepContent);
   //show.innerHTML = step + step;
 }
 
-function getLUMatrix(matrix, type, iteration = 0) {
+function getLUMatrix(matrix, type, iteration) {
   let lu = [];
 
   for (let i = 0; i < matrix.length; i++) {
     let aux = [];
     for (let j = 0; j < matrix[i].length; j++) {
-      if (type === "a") {
-        if (j < i) {
-          aux.push(underIndex("j", i + 1 + "" + (j + 1)));
-        } else {
-          aux.push(underIndex("u", i + 1 + "" + (j + 1)));
-        }
-      } else if (type === "l" && j <= i) {
-        if (j <= iteration && j < i) {
+      if (type === "l" && j < i) {
+        if (j <= iteration) {
           aux.push(matrix[i][j]);
-        } else if (j == i) {
-          aux.push(1);
         } else {
           aux.push(underIndex("j", i + 1 + "" + (j + 1)));
         }
@@ -322,8 +304,8 @@ function getLUMatrix(matrix, type, iteration = 0) {
 
 function showOperationButton() {
   /*
-    Mostra o botão de ação para utilizar o método de eliminação de Gauss
-  */
+      Mostra o botão de ação para utilizar o método de eliminação de Gauss
+    */
 
   var btn = document.getElementById("btn");
   btn.innerHTML =
