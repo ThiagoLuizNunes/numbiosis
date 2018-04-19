@@ -21,7 +21,10 @@ function gaussElimiation() {
     //return;
   }
 
-  origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
+  //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
+  origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
+
+  //pivoting(origin, 2);
 
   let matrixLU = copyMatrix(origin);
   //getLUMatrix(matrixLU, 'u', 2);
@@ -153,8 +156,8 @@ function gaussElimiation() {
       equationWValues = '';
       equationResult = '';
       factor = 0;
-      factorEq = '\\raisebox{0.25em}{(}';
-      factorEqWValues = '';
+      factorEq = '\\raisebox{0em}{(}';
+      factorEqWValues = '(';
 
       for (let n = 0; n < i; n++) {
         //factor += lower[j][n] * upper[n][i];
@@ -169,14 +172,14 @@ function gaussElimiation() {
       }
 
       //lower[j][i] = Math.round(((origin[i][i] - factor) / upper[i][i]) * 100) / 100;
-      matrixLU[j][i] = Math.round(((origin[i][i] - factor) / matrixLU[i][i]) * 100) / 100;
+      matrixLU[j][i] = Math.round(((origin[j][i] - factor) / matrixLU[i][i]) * 100) / 100;
 
       factorEq = factorEq.slice(0, -3) + "\\raisebox{0em}{)}"
       factorEqWValues = factorEqWValues.slice(0, -3) + ")"
 
       //equation = 'l' + (j + 1) + "" + (i + 1) + " = a" + (i + 1) + "" + (i + 1) + " - " + factorEq + " / " + "u" + (i + 1) + "" + (i + 1);
       equation = underIndex('l', (j + 1) + '' + (i + 1))
-        + ' = ' + underIndex('a', (i + 1) + '' + (i + 1))
+        + ' = ' + underIndex('a', (j + 1) + '' + (i + 1))
         + ' - \\frac{' + factorEq + '}{'
         + underIndex('u', (i + 1) + "" + (i + 1)) + '}';
 
@@ -186,8 +189,8 @@ function gaussElimiation() {
         + upper[i][i] + "}";*/
 
       equationWValues = underIndex('l', (j + 1) + '' + (i + 1))
-        + " = " + origin[i][j]
-        + " - \\frac{" + factor + "}{ "
+        + " = " + origin[j][i]
+        + " - \\frac{" + factorEqWValues + "}{ "
         + matrixLU[i][i] + "}";
 
       //equationResult = underIndex('l', (j + 1) + '' + (i + 1)) + " = " + lower[j][i];
@@ -217,6 +220,22 @@ function gaussElimiation() {
   //stepContent = formMatrix([[1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10], [11,12,13,-14]]) + formMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   //step = stepSection('Teste de seção', stepContent);
   //show.innerHTML = step + step;
+}
+
+function pivoting(matrix, column) {
+  let max = 0;
+  let aux = [];
+
+  for (let i = 0; i < matrix.length; i++) {
+    if (Math.abs(matrix[i][column]) > Math.abs(matrix[column][column])) {
+      max = i;
+    }
+  }
+
+  aux = matrix[column];
+  matrix[max] = matrix[column];
+  matrix[column] = aux;
+  console.log(matrix)
 }
 
 function getLUMatrix(matrix, type, iteration) {
