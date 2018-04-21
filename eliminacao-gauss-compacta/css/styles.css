@@ -32,9 +32,12 @@
 
 .step-matrix {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .matrix {
@@ -47,6 +50,7 @@
 
 .operation-button {
   margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 #steps,
@@ -55,6 +59,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.step {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #E0F2F1;
+  border-radius: 20px;
+  padding-bottom: 5px;
+  /*border: 2px solid gray;
+  border-radius: 20px;*/
 }
 
 .step-title {
@@ -62,22 +77,25 @@
   width: 100%;
   text-align: center;
   font-weight: bold;
-  border-top: 1px solid black;
+  /*border-top: 1px solid black;
   border-bottom: 1px solid black;
   padding: 10px;
   margin-top: 30px;
   margin-bottom: 30px;
+  border-radius: 15px 0px 0px 0px;
+  background-color: gray;*/
 }
 
 .step-content {
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
-}
-
-.step-matrix {
-  margin-left: 10px;
-  margin-right: 10px;
+  justify-content: center;
+  background-color: white;
+  width: 98%;
+  border: 1px solid #26A69A;
+  border-radius: 15px;
+  padding: 15px;
 }
 
 .equations {
@@ -97,20 +115,20 @@
   margin: 10px !important;
 }
 
-@media (min-width: 1025px) {
+/*@media (min-width: 1025px) {
   .containerFlex {
-    padding-left: 30%;
-    padding-right: 30%;
+    padding-left: 10%;
+    padding-right: 10%;
   }
-}
+}*/
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   .brand-logo {
     font-size: 9pt !important;
   }
 }
 
-@media (min-width: 401px) and (max-width: 685px) {
+@media (min-width: 501px) and (max-width: 685px) {
   .brand-logo {
     font-size: 12pt !important;
   }
@@ -131,6 +149,10 @@
   }
 
   .step-matrix {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
     margin: 10px;
   }
 }
