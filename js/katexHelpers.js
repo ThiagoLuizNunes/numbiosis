@@ -19,3 +19,11 @@ function maTex(matrix, prefix = "") {
     prefix + "\\begin{pmatrix} " + rows.join("\\\\") + "\\end{pmatrix}"
   );
 }
+
+function negative(value) {
+  if (value < 0) {
+    return '(' + value + ')';
+  }
+
+  return value;
+}

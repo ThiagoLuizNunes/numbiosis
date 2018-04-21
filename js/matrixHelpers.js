@@ -76,6 +76,18 @@ function sylvester(matrix) {
   return true;
 }
 
+function isSymmetric(matrix) {
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (matrix[i][j] != matrix[j][i]) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 function getTableValues() {
   /*
       Pegar os valores dos inputs da matriz de entrada
@@ -146,32 +158,62 @@ function getLUMatrix(matrix, type, iteration = 0, label = '') {
   for (let i = 0; i < matrix.length; i++) {
     let aux = [];
     for (let j = 0; j < matrix[i].length; j++) {
-      if (type === "a") {
-        if (j < i) {
-          aux.push(underIndex("l", i + 1 + "" + (j + 1)));
-        } else {
-          aux.push(underIndex("u", i + 1 + "" + (j + 1)));
-        }
-      } else if (type === "l" && j <= i) {
-        if (j <= iteration && j < i) {
-          aux.push(matrix[i][j]);
-        } else if (j == i) {
-          aux.push(1);
-        } else {
-          aux.push(underIndex(label, i + 1 + "" + (j + 1)));
-        }
-      } else if (type === "u" && j >= i) {
-        if (i <= iteration) {
-          aux.push(matrix[i][j]);
-        } else {
-          aux.push(underIndex(label, i + 1 + "" + (j + 1)));
-        }
-      } else {
-        aux.push("0");
+      switch (type) {
+        case 'g':
+          if (j <= i) {
+            aux.push(underIndex(label, (i + 1) + "" + (j + 1)));
+          } else {
+            aux.push('0');
+          }
+          break;
+        case 'a':
+          if (j < i) {
+            aux.push(underIndex("l", i + 1 + "" + (j + 1)));
+          } else {
+            aux.push(underIndex("u", i + 1 + "" + (j + 1)));
+          }
+          break;
+        case 'l':
+          if (j <= 1) {
+            if (j <= iteration && j < i) {
+              aux.push(matrix[i][j]);
+            } else if (j == i) {
+              aux.push(1);
+            } else {
+              aux.push(underIndex(label, i + 1 + "" + (j + 1)));
+            }
+          } else {
+            aux.push("0");
+          }
+          break;
+        case 'u':
+          if (j >= i) {
+            if (i <= iteration) {
+              aux.push(matrix[i][j]);
+            } else {
+              aux.push(underIndex(label, i + 1 + "" + (j + 1)));
+            }
+          } else {
+            aux.push("0");
+          }
+          break;
       }
     }
     lu.push(aux);
   }
 
   return lu;
+}
+
+function getColumn(matrix, column) {
+  let outColumn = [];
+  matrix.forEach(line => {
+    for (let i = 0; i < line.length; i++) {
+      if (i == column) {
+        outColumn.push([line[i]])
+      }
+    }
+  })
+
+  return outColumn;
 }
