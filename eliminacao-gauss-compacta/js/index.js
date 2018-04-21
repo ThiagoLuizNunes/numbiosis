@@ -4,11 +4,16 @@ function gaussElimiation() {
 
   if (origin == null) {
     alert("Preencha todos os campos!");
-    //return;
+    return;
   }
 
   //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
-  origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
+  //origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
+  let pivot = checkPivoting(origin);
+  if (pivot >= 0) {
+    pivoting(origin, pivot);
+    addStep(title = "Pivoteamento na linha " + (pivot + 1), matrix = maTex(origin, "A ="));
+  }
 
   //pivoting(origin, 2);
 
@@ -47,11 +52,11 @@ function gaussElimiation() {
     [
       katex.renderToString(
         "\\boxed{" +
-          underIndex("u", "ij") +
-          " = " +
-          "	\\kern0.1em " +
-          underIndex("a", "ij") +
-          " \\footnotesize ;\\kern0.1em j = 1, 2,..., n}"
+        underIndex("u", "ij") +
+        " = " +
+        "	\\kern0.1em " +
+        underIndex("a", "ij") +
+        " \\footnotesize ;\\kern0.1em j = 1, 2,..., n}"
       )
     ]
   );
@@ -62,14 +67,14 @@ function gaussElimiation() {
   equations.push(
     katex.renderToString(
       "\\boxed{" +
-        underIndex("l", "i1") +
-        " = " +
-        " \\frac{" +
-        underIndex("a", "i1") +
-        "}{" +
-        underIndex("u", "11") +
-        "}" +
-        "\\footnotesize ; i = 2,..., n}"
+      underIndex("l", "i1") +
+      " = " +
+      " \\frac{" +
+      underIndex("a", "i1") +
+      "}{" +
+      underIndex("u", "11") +
+      "}" +
+      "\\footnotesize ; i = 2,..., n}"
     )
   );
 
@@ -83,14 +88,14 @@ function gaussElimiation() {
     equations.push(
       katex.renderToString(
         underIndex("l", i + 1 + "1") +
-          " = " +
-          " \\frac{" +
-          origin[i][0] +
-          "}{" +
-          matrixLU[0][0] +
-          "}" +
-          " = " +
-          matrixLU[i][0]
+        " = " +
+        " \\frac{" +
+        origin[i][0] +
+        "}{" +
+        matrixLU[0][0] +
+        "}" +
+        " = " +
+        matrixLU[i][0]
       )
     );
   }
@@ -164,12 +169,12 @@ function gaussElimiation() {
       finalEquations.push(
         katex.renderToString(
           "\\begin{matrix} " +
-            equation +
-            " \\\\ " +
-            equationWValues +
-            " \\\\ " +
-            equationResult +
-            "\\end{matrix}"
+          equation +
+          " \\\\ " +
+          equationWValues +
+          " \\\\ " +
+          equationResult +
+          "\\end{matrix}"
         )
       );
       wasCalc = true;
@@ -250,12 +255,12 @@ function gaussElimiation() {
       finalEquations.push(
         katex.renderToString(
           "\\begin{matrix} " +
-            equation +
-            " \\\\ " +
-            equationWValues +
-            " \\\\ " +
-            equationResult +
-            "\\end{matrix}"
+          equation +
+          " \\\\ " +
+          equationWValues +
+          " \\\\ " +
+          equationResult +
+          "\\end{matrix}"
         )
       );
 
@@ -264,7 +269,7 @@ function gaussElimiation() {
 
     if (wasCalc) {
       addStep(
-        (title = "Coluna " + (i + 1) + " da L"),
+        (title = "Coluna " + (i + 1) + " da Matriz L"),
         (matrix = maTex(getLUMatrix(matrixLU, "l", i), "L =")),
         finalEquations
       );
