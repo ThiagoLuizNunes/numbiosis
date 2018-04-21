@@ -1,20 +1,21 @@
 function gaussElimiation() {
   //let show = document.getElementById('steps');
+  hideSteps();
   let origin = getTableValues();
 
   if (origin == null) {
     alert("Preencha todos os campos!");
     return;
+  } else if (isNullMatrix(origin)) {
+    alert("A matriz não pode ser nula!");
+    return;
+  } else if (math.det(origin) == 0) {
+    alert("É uma matriz singular. O determinante da matriz é 0");
+    return;
   }
 
   //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
   //origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
-  let pivot = checkPivoting(origin);
-  if (pivot >= 0) {
-    pivoting(origin, pivot);
-    addStep(title = "Pivoteamento na linha " + (pivot + 1), matrix = maTex(origin, "A ="));
-  }
-
   //pivoting(origin, 2);
 
   let matrixLU = copyMatrix(origin);
@@ -23,6 +24,13 @@ function gaussElimiation() {
     (title = "Matriz inicial"),
     (matrix = maTex(origin, "A =") + maTex(getLUMatrix(origin, "a"), "A ="))
   );
+
+  let pivot = checkPivoting(origin);
+  if (pivot >= 0) {
+    pivoting(origin, pivot);
+    pivoting(matrixLU, pivot);
+    addStep(title = "Pivoteamento na linha " + (pivot + 1), matrix = maTex(origin, "A ="));
+  }
 
   /*let lower = [];
   let upper = [];
@@ -287,42 +295,6 @@ function gaussElimiation() {
   //stepContent = formMatrix([[1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10], [11,12,13,-14]]) + formMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   //step = stepSection('Teste de seção', stepContent);
   //show.innerHTML = step + step;
-}
-
-function getLUMatrix(matrix, type, iteration = 0) {
-  let lu = [];
-
-  for (let i = 0; i < matrix.length; i++) {
-    let aux = [];
-    for (let j = 0; j < matrix[i].length; j++) {
-      if (type === "a") {
-        if (j < i) {
-          aux.push(underIndex("j", i + 1 + "" + (j + 1)));
-        } else {
-          aux.push(underIndex("u", i + 1 + "" + (j + 1)));
-        }
-      } else if (type === "l" && j <= i) {
-        if (j <= iteration && j < i) {
-          aux.push(matrix[i][j]);
-        } else if (j == i) {
-          aux.push(1);
-        } else {
-          aux.push(underIndex("j", i + 1 + "" + (j + 1)));
-        }
-      } else if (type === "u" && j >= i) {
-        if (i <= iteration) {
-          aux.push(matrix[i][j]);
-        } else {
-          aux.push(underIndex("u", i + 1 + "" + (j + 1)));
-        }
-      } else {
-        aux.push("0");
-      }
-    }
-    lu.push(aux);
-  }
-
-  return lu;
 }
 
 function showOperationButton() {
