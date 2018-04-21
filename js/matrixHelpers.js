@@ -12,6 +12,16 @@ function copyMatrix(matrix) {
   return out;
 }
 
+function checkPivoting(matrix) {
+  for (let i = 0; i < matrix.length; i++) {
+    if (matrix[i][i] == 0) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 function pivoting(matrix, column) {
   let max = 0;
   let aux = [];
@@ -22,9 +32,10 @@ function pivoting(matrix, column) {
     }
   }
 
-  aux = matrix[column];
-  matrix[max] = matrix[column];
-  matrix[column] = aux;
+  let copy = copyMatrix(matrix)
+
+  matrix[max] = copy[column];
+  matrix[column] = copy[max];
   console.log(matrix);
 }
 
