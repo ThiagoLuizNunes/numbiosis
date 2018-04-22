@@ -1,5 +1,6 @@
 function jacobi() {
   hideSteps();
+  hidePlot();
   let origin = getTableValues();
   let bVector = getTableValues((id = "bvector-input"));
   let xVector = getTableValues((id = "xvector-input"));
@@ -10,23 +11,16 @@ function jacobi() {
   let oldX = [];
   let actualError = 0;
 
-  origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
+  /*origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
 
   bVector = [[7], [-8], [6]];
-  bVector = toArray(bVector);
 
   xVector = [[0.7], [-1.6], [0.6]];
-  xVector = toArray(xVector);
-  oldX = xVector.slice();
-  newX = xVector.slice();
-
-  xTrack.push(xVector.slice());
 
   error = 0.05;
+  maxIter = 10;*/
 
-  maxIter = 10;
-
-  /*if (
+  if (
     origin == null ||
     bVector == null ||
     xVector == null ||
@@ -48,28 +42,18 @@ function jacobi() {
   } else if (!rowCriterion(origin)) {
     alert("A matriz não atende ao Critério de Linha");
     return;
-  }*/
-
-  let xMatrix = [];
-
-  for (let i = 0; i < origin.length; i++) {
-    xMatrix.push([underIndex("x", i + 1)]);
   }
 
-  addStep(
-    (title = "Sistema inicial"),
-    (matrix = ""),
-    (equations = [
-      maTex(origin) + maTex(xMatrix) + maTex(toMatrix(bVector), " = ")
-    ])
-  );
+  bVector = toArray(bVector);
+  xVector = toArray(xVector);
+  oldX = xVector.slice();
+  newX = xVector.slice();
 
-  xMatrix = [];
+  xTrack.push(xVector.slice());
 
-  for (let i = 0; i < origin.length; i++) {
-    xMatrix.push([underIndex("x", i + 1) + "^{(k+1)}"]);
-  }
+  showSystem(origin, bVector);
 
+  //matriz com os valores dividios pelo elemento da diagonal
   let matrixMult = copyMatrix(origin);
 
   for (let i = 0; i < origin.length; i++) {
@@ -81,47 +65,9 @@ function jacobi() {
     }
   }
 
-  let funcIterationEquation = "";
-  let funcIterationEquationWValues = "";
-  let funcIterationFinal = [];
-  let funcIterationFinalWValues = [];
+  showIteractionFuntion(origin, matrixMult, bVector);
 
-  for (let i = 0; i < origin.length; i++) {
-    funcIterationEquation = "(" + bVector[i];
-    funcIterationEquationWValues = bVector[i];
-
-    for (let j = 0; j < origin[i].length; j++) {
-      if (j != i) {
-        funcIterationEquation +=
-          " - " +
-          negative(origin[i][j]) +
-          " * " +
-          underIndex("x", j + 1) +
-          "^{(k)}";
-        funcIterationEquationWValues +=
-          " - " +
-          negative(matrixMult[i][j]) +
-          " * " +
-          underIndex("x", j + 1) +
-          "^{(k)}";
-      }
-    }
-
-    funcIterationEquation += ")\\frac{1}{" + origin[i][i] + "}";
-
-    funcIterationFinal.push([funcIterationEquation]);
-    funcIterationFinalWValues.push([funcIterationEquationWValues]);
-  }
-
-  addStep(
-    (title = "Função de iteração"),
-    (matrix = ""),
-    (equations = [
-      maTex(xMatrix) + maTex(funcIterationFinal, "="),
-      maTex(xMatrix) + maTex(funcIterationFinalWValues, "=")
-    ])
-  );
-
+  //iterações do método de Jacobi
   let k = -1;
   let newValue = 0;
   let newValueEquation = "";
@@ -177,10 +123,6 @@ function jacobi() {
       equationResult =
         underIndex("x", i + 1) + "^{(" + (k + 1) + ")} = " + newX[i];
 
-      /*console.log(equation);
-      console.log(equationWValues);
-      console.log(equationResult);*/
-
       finalEquations.push(
         katex.renderToString(
           "\\begin{matrix} " +
@@ -203,29 +145,9 @@ function jacobi() {
     // Calculo do erro
 
     actualError = erroCalc(newX, oldX);
-    addStep(
-      (title = "Erro da Iteração k = " + k),
-      (matrix = ""),
-      (equations = [
-        katex.renderToString(
-          "e = \\dfrac{max\\{|x^{(" +
-            (k + 1) +
-            ")} - x^{(" +
-            k +
-            ")}|\\}}{max\\{|x^{(" +
-            (k + 1) +
-            ")}|\\}}"
-        ),
-        katex.renderToString(
-          "e = \\dfrac{" +
-            math.max(math.round(math.abs(math.subtract(newX, oldX)), 3)) +
-            "}{" +
-            math.max(math.round(newX, 3)) +
-            "}"
-        ),
-        katex.renderToString("e = " + actualError)
-      ])
-    );
+
+    showErrorCalc(newX, oldX, actualError, k);
+
     xTrack.push(newX.slice());
   } while (actualError > error && k < maxIter);
 
@@ -242,6 +164,24 @@ function jacobi() {
   return xTrack;
 }
 
+function showSystem(matrix, bVector) {
+  //preparando a exibição do sistema completo
+  let xMatrix = [];
+
+  //formação do vetor x
+  for (let i = 0; i < matrix.length; i++) {
+    xMatrix.push([underIndex("x", i + 1)]);
+  }
+
+  //apresenta o sistema inicial completo
+  addStep(
+    (title = "Sistema Inicial"),
+    (equations = [
+      maTex(matrix) + maTex(xMatrix) + maTex(toMatrix(bVector), " = ")
+    ])
+  );
+}
+
 function showOperationButton() {
   /*
     Mostra o botão de ação para utilizar o método de eliminação de Gauss
@@ -250,6 +190,84 @@ function showOperationButton() {
   var btn = document.getElementById("btn");
   btn.innerHTML =
     '<a class="waves-effect waves-light btn-large" onclick="plot()">Aplicar Método de Jacobi</a>';
+}
+
+function showIteractionFuntion(matrix, matrixMult, bVector) {
+  //preparando a exibição da função de iteração
+  let xMatrix = [];
+
+  //formação do vetor x
+  for (let i = 0; i < matrix.length; i++) {
+    xMatrix.push([underIndex("x", i + 1) + "^{(k+1)}"]);
+  }
+  //preparando a funação de iteração
+  let funcIterationEquation = "";
+  let funcIterationEquationWValues = "";
+  let funcIterationFinal = [];
+  let funcIterationFinalWValues = [];
+
+  for (let i = 0; i < matrix.length; i++) {
+    funcIterationEquation = "(" + bVector[i];
+    funcIterationEquationWValues = math.round(bVector[i] / matrix[i][i], 3);
+
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (j != i) {
+        funcIterationEquation +=
+          " - " +
+          negative(matrix[i][j]) +
+          " * " +
+          underIndex("x", j + 1) +
+          "^{(k)}";
+        funcIterationEquationWValues +=
+          " - " +
+          negative(matrixMult[i][j]) +
+          " * " +
+          underIndex("x", j + 1) +
+          "^{(k)}";
+      }
+    }
+
+    funcIterationEquation += ")\\frac{1}{" + matrix[i][i] + "}";
+
+    funcIterationFinal.push([funcIterationEquation]);
+    funcIterationFinalWValues.push([funcIterationEquationWValues]);
+  }
+
+  //exibição da função de iteração
+  addStep(
+    (title = "Função de Iteração"),
+    (matrix = ""),
+    (equations = [
+      maTex(xMatrix) + maTex(funcIterationFinal, "="),
+      maTex(xMatrix) + maTex(funcIterationFinalWValues, "=")
+    ])
+  );
+}
+
+function showErrorCalc(newX, oldX, actualError, k) {
+  addStep(
+    (title = "Erro da Iteração k = " + k),
+    (matrix = ""),
+    (equations = [
+      katex.renderToString(
+        "e = \\dfrac{max\\{|x^{(" +
+          (k + 1) +
+          ")} - x^{(" +
+          k +
+          ")}|\\}}{max\\{|x^{(" +
+          (k + 1) +
+          ")}|\\}}"
+      ),
+      katex.renderToString(
+        "e = \\dfrac{" +
+          math.max(math.round(math.abs(math.subtract(newX, oldX)), 3)) +
+          "}{" +
+          math.max(math.round(newX, 3)) +
+          "}"
+      ),
+      katex.renderToString("e = " + actualError)
+    ])
+  );
 }
 
 function hideOperationButton() {

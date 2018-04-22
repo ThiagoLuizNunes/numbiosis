@@ -65,7 +65,7 @@
 .step {
   margin-top: 10px;
   margin-bottom: 10px;
-  background-color: #E0F2F1;
+  background-color: #e0f2f1;
   border-radius: 20px;
   padding-bottom: 5px;
   /*border: 2px solid gray;
@@ -89,7 +89,7 @@
 .step-content {
   background-color: white;
   width: 98%;
-  border: 1px solid #26A69A;
+  border: 1px solid #26a69a;
   border-radius: 15px;
   padding: 15px;
 }
@@ -120,7 +120,7 @@
 
 .system div {
   margin: 10px;
-} 
+}
 
 /*@media (min-width: 1025px) {
   .containerFlex {
@@ -129,7 +129,7 @@
   }
 }*/
 
-@media (max-width: 500px) {
+/*@media (max-width: 500px) {
   .brand-logo {
     font-size: 9pt !important;
   }
@@ -145,7 +145,7 @@
   .brand-logo {
     font-size: 16pt !important;
   }
-}
+}*/
 
 @media (max-width: 600px) {
   .step-content {
