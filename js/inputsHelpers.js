@@ -70,5 +70,5 @@ function dimHandlerSys(
 
 function getFloatValue(id) {
   let element = document.getElementById(id);
-  return parseFloat(element.value);
+  return element.value === "" ? null : parseFloat(element.value);
 }
