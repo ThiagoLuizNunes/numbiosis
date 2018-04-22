@@ -22,21 +22,37 @@ function checkPivoting(matrix) {
   return -1;
 }
 
-function pivoting(matrix, column) {
+function pivoting(matrix, bVector = null) {
   let max = 0;
-  let aux = [];
+  let n = 0;
+  let column = 0;
 
-  for (let i = 0; i < matrix.length; i++) {
-    if (Math.abs(matrix[i][column]) > Math.abs(matrix[column][column])) {
-      max = i;
+  while (checkPivoting(matrix) >= 0 && n < matrix.length) {
+    n++;
+    column = checkPivoting(matrix);
+    max = 0;
+
+    for (let i = 0; i < matrix.length; i++) {
+      if (Math.abs(matrix[i][column]) > Math.abs(matrix[max][column])) {
+        max = i;
+      }
     }
+
+    let copy = copyMatrix(matrix);
+
+    matrix[max] = copy[column];
+    matrix[column] = copy[max];
+
+    if (bVector != null) {
+      let aux = bVector[column];
+      bVector[column] = bVector[max];
+      bVector[max] = bVector[column];
+    }
+
+    //console.log(matrix);
   }
 
-  let copy = copyMatrix(matrix);
-
-  matrix[max] = copy[column];
-  matrix[column] = copy[max];
-  console.log(matrix);
+  return n == 0 ? null : matrix;
 }
 
 function isNullMatrix(matrix) {
@@ -211,7 +227,7 @@ function getLUMatrix(matrix, type, iteration = 0, label = "") {
           }
           break;
         case "l":
-          if (j <= 1) {
+          if (j <= i) {
             if (j <= iteration && j < i) {
               aux.push(matrix[i][j]);
             } else if (j == i) {
