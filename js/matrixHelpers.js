@@ -32,7 +32,7 @@ function pivoting(matrix, column) {
     }
   }
 
-  let copy = copyMatrix(matrix)
+  let copy = copyMatrix(matrix);
 
   matrix[max] = copy[column];
   matrix[column] = copy[max];
@@ -46,8 +46,8 @@ function isNullMatrix(matrix) {
       if (cell != 0) {
         nullMatrix = false;
       }
-    })
-  })
+    });
+  });
 
   return nullMatrix;
 }
@@ -58,7 +58,7 @@ function sylvester(matrix) {
   let det = 0;
 
   for (let i = 0; i < matrix.length; i++) {
-    actualMatrix = []
+    actualMatrix = [];
     for (let j = 0; j <= i; j++) {
       auxMatrix = [];
       for (let k = 0; k <= i; k++) {
@@ -88,11 +88,33 @@ function isSymmetric(matrix) {
   return true;
 }
 
-function getTableValues() {
+function rowCriterion(matrix) {
+  let count = 0;
+  let actual = 0;
+
+  for (let i = 0; i < matrix.length; i++) {
+    count = 0;
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (j != i) {
+        count += Math.abs(matrix[i][j]);
+      }
+    }
+
+    actual = count / Math.abs(matrix[i][i]);
+
+    if (actual > 1) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function getTableValues(id = "matrix-input") {
   /*
       Pegar os valores dos inputs da matriz de entrada
     */
-  let table = document.getElementById("matrix-input");
+  let table = document.getElementById(id);
   let values = [];
   let rowValues = [];
 
@@ -113,7 +135,13 @@ function getTableValues() {
   return values;
 }
 
-function createMatrixInput(rows, columns) {
+function createMatrixInput(
+  rows,
+  columns,
+  id = "matrix",
+  matrixId = "matrix-input",
+  label = "a"
+) {
   /*
       Cria a matriz de inputs para a definição dos valores da matriz inicial
       Params:
@@ -121,17 +149,18 @@ function createMatrixInput(rows, columns) {
         - columns: quantidade de colunas
     */
 
-  let matrix = document.getElementById("matrix");
+  let matrix = document.getElementById(id);
 
   matrix.innerHTML = "";
 
-  let content = '<table id="matrix-input" class="matrix-table">';
+  let content = '<table id="' + matrixId + '" class="matrix-table">';
 
   for (let i = 0; i < rows; i++) {
     content += "<tr>";
     for (let j = 0; j < columns; j++) {
       content +=
-        '<td><input type="number" placeholder="a' +
+        '<td><input type="number" placeholder="' +
+        label +
         (i + 1) +
         "" +
         (j + 1) +
@@ -145,13 +174,21 @@ function createMatrixInput(rows, columns) {
   matrix.innerHTML = content;
 }
 
-function hideMatrixInput() {
-  document.getElementById("matrix").innerHTML = "";
+function hideMatrixInput(id = "matrix") {
+  document.getElementById(id).innerHTML = "";
 }
 
-function getLUMatrix(matrix, type, iteration = 0, label = '') {
+function hideSystemInput(id = "system") {
+  document.getElementById(id).style.display = "none";
+}
+
+function showSystemInput(id = "system") {
+  document.getElementById(id).style.display = "flex";
+}
+
+function getLUMatrix(matrix, type, iteration = 0, label = "") {
   let lu = [];
-  if (label === '') {
+  if (label === "") {
     label = type;
   }
 
@@ -159,21 +196,21 @@ function getLUMatrix(matrix, type, iteration = 0, label = '') {
     let aux = [];
     for (let j = 0; j < matrix[i].length; j++) {
       switch (type) {
-        case 'g':
+        case "g":
           if (j <= i) {
-            aux.push(underIndex(label, (i + 1) + "" + (j + 1)));
+            aux.push(underIndex(label, i + 1 + "" + (j + 1)));
           } else {
-            aux.push('0');
+            aux.push("0");
           }
           break;
-        case 'a':
+        case "a":
           if (j < i) {
             aux.push(underIndex("l", i + 1 + "" + (j + 1)));
           } else {
             aux.push(underIndex("u", i + 1 + "" + (j + 1)));
           }
           break;
-        case 'l':
+        case "l":
           if (j <= 1) {
             if (j <= iteration && j < i) {
               aux.push(matrix[i][j]);
@@ -186,7 +223,7 @@ function getLUMatrix(matrix, type, iteration = 0, label = '') {
             aux.push("0");
           }
           break;
-        case 'u':
+        case "u":
           if (j >= i) {
             if (i <= iteration) {
               aux.push(matrix[i][j]);
@@ -210,10 +247,37 @@ function getColumn(matrix, column) {
   matrix.forEach(line => {
     for (let i = 0; i < line.length; i++) {
       if (i == column) {
-        outColumn.push([line[i]])
+        outColumn.push([line[i]]);
       }
     }
-  })
+  });
 
   return outColumn;
+}
+
+function toArray(vector) {
+  let outArray = [];
+
+  vector.forEach(element => {
+    outArray.push(element[0]);
+  });
+
+  return outArray;
+}
+
+function toMatrix(vector) {
+  let outMatrix = [];
+
+  vector.forEach(element => {
+    outMatrix.push([element]);
+  });
+
+  return outMatrix;
+}
+
+function erroCalc(newVector, oldVector) {
+  return (
+    math.max(math.round(math.abs(math.subtract(newVector, oldVector)), 3)) /
+    math.max(math.abs(newVector))
+  );
 }

@@ -1,11 +1,5 @@
 function underIndex(letter, index) {
-  return (
-    "\\raisebox{0.25em}{" +
-    letter +
-    "}\\tiny " +
-    index +
-    "\\normalsize \\raisebox{0em}{}"
-  );
+  return letter + "_{" + index + "}";
 }
 
 function maTex(matrix, prefix = "") {
@@ -22,7 +16,7 @@ function maTex(matrix, prefix = "") {
 
 function negative(value) {
   if (value < 0) {
-    return '(' + value + ')';
+    return "(" + value + ")";
   }
 
   return value;
