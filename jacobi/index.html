@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jacobi</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./../libs/katex/katex.min.css">
+    <link rel="stylesheet" href="../libs/materialize/css/materialize.min.css">
+    <script src="./../libs/katex/katex.min.js"></script>
+    <script src="./../libs/math/math.min.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./../js/inputsHelpers.js"></script>
+    <script src="./../js/katexHelpers.js"></script>
+    <script src="./../js/matrixHelpers.js"></script>
+    <script src="./../js/stepsHelpers.js"></script>
+</head>
+
+<body>
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper teal lighten-2">
+                <a href="https://github.com/Vnicius/numbiosis" class="brand-logo center" target="blank">
+                    Jacobi
+                </a>
+        </nav>
+        </div>
+        <div class="containerFlex">
+            <span class="span-text">Dimensões da Matriz Quadrada</span>
+            <input id="dim" type="number" maxlength="1" oninput="dimHandlerSys()" placeholder="min: 2 | max: 8" />
+            <div id="system" class="system">
+                <div id="matrix" class="matrix"></div>
+                <div id='bVector' class="matrix"></div>
+                <span class="span-text">X Inicial</span>
+                <div id='xVector' class="matrix"></div>
+            </div>
+            <span class="span-text">Critério de Parada</span>
+            <input id="error" type="number" placeholder="1e-3">
+            <span class="span-text">Número Máximo de Iterações</span>
+            <input id="iterations" type="number" placeholder="10">
+            <div id="btn" class="operation-button"></div>
+            <div id="steps"></div>
+        </div>
+
+        <div id="plotDiv"></div>
+        <script src="./../libs/plotly/plotly-latest.min.js"></script>
+        <script>
+            function plot() {
+                // pegar os valores dos inputs
+                let track = jacobi();
+
+                if (track[0].length <= 3) {
+
+                    // gera o mapeamento das cores
+                    let colors = (tam) => {
+                        let colors = [];
+                        for (let i = 0; i < tam; i++) {
+                            colors.push(i);
+                        }
+                        return colors;
+                    }
+
+                    let getValues = (valuesMatrix, index) => {
+                        let values = [];
+                        valuesMatrix.forEach(element => {
+                            values.push(element[index]);
+                        });
+
+                        return values;
+                    }
+
+                    let trace = {};
+                    let traces = [];
+
+                    // Informações para a plotagem
+                    if (track[0].length == 2) {
+                        /*trace = {
+                            type: 'scatter3d',
+                            x: getValues(track, 0),
+                            y: getValues(track, 1),
+                            mode: 'markers',
+                            marker: {
+                                size: 10,
+                                color: colors(track.length),
+                                colorbar: { x: -0.155 }
+                            },
+                        };*/
+
+                        for (let i = 0; i < track.length; i++) {
+                            traces.push({
+                                type: "scatter3d",
+                                x: [0, track[i][0]],
+                                y: [0, track[i][1]],
+                                mode: 'lines+markers',
+                                marker: {
+                                    size: 3,
+                                    symbol: "diamond",
+                                    color: colors(track.length),
+                                    colorbar: { x: -0.155 }
+                                },
+                                lines: {
+                                    color: colors(track.length)[i],
+                                },
+                                name: "x" + i,
+                            })
+                        }
+
+                    } else {
+                        /*trace = {
+                            type: 'scatter3d',
+                            x: getValues(track, 0),
+                            y: getValues(track, 1),
+                            z: getValues(track, 2),
+                            mode: 'markers',
+                            marker: {
+                                size: 2,
+                                symbol: "diamond",
+                                color: colors(track.length),
+                                colorbar: { x: -0.155 }
+                            },
+                        };*/
+
+                        for (let i = 0; i < track.length; i++) {
+                            traces.push({
+                                type: "scatter3d",
+                                x: [0, track[i][0]],
+                                y: [0, track[i][1]],
+                                z: [0, track[i][2]],
+                                mode: 'lines+markers',
+                                marker: {
+                                    size: 3,
+                                    symbol: "diamond",
+                                    color: colors(track.length),
+                                    colorbar: { x: -0.155 }
+                                },
+                                lines: {
+                                    color: colors(track.length)[i],
+                                },
+                                name: "x" + i,
+                            })
+                        }
+                    }
+
+                    let layout = {
+                        title: "Aproximações das Soluções   ",
+                    }
+
+                    Plotly.newPlot('plotDiv', traces, layout);
+                }
+
+            }
+        </script>
+</body>
+
+</html>

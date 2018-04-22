@@ -1,0 +1,165 @@
+.containerFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.containerFlex .span-text {
+  text-align: center;
+  display: block;
+  margin-top: 10px;
+  font-size: 15pt;
+  font-weight: bold;
+}
+
+.containerFlex input {
+  width: 50%;
+  height: 30px;
+  text-align: center;
+  font-size: 14pt;
+}
+
+.matrix-table {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.matrix-show td {
+  padding: 15px;
+}
+
+.step-matrix {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.matrix {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.operation-button {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+#steps,
+.step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.step {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #E0F2F1;
+  border-radius: 20px;
+  padding-bottom: 5px;
+  /*border: 2px solid gray;
+  border-radius: 20px;*/
+}
+
+.step-title {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  /*border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 15px 0px 0px 0px;
+  background-color: gray;*/
+}
+
+.step-content {
+  background-color: white;
+  width: 98%;
+  border: 1px solid #26A69A;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.equations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+
+.equation {
+  margin: 10px;
+}
+
+.katex {
+  font-size: 20pt !important;
+  margin: 10px !important;
+}
+
+.system {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.system div {
+  margin: 10px;
+} 
+
+/*@media (min-width: 1025px) {
+  .containerFlex {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}*/
+
+@media (max-width: 500px) {
+  .brand-logo {
+    font-size: 9pt !important;
+  }
+}
+
+@media (min-width: 501px) and (max-width: 685px) {
+  .brand-logo {
+    font-size: 12pt !important;
+  }
+}
+
+@media (min-width: 686px) and (max-width: 850px) {
+  .brand-logo {
+    font-size: 16pt !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .step-content {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .step-matrix {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+  }
+}
