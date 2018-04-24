@@ -2,7 +2,7 @@ function gaussElimiation() {
   hideSteps();
   let origin = getTableValues();
 
-  //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
+  origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
   //origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
 
   if (origin == null) {
@@ -115,7 +115,6 @@ function gaussElimiation() {
       factorEqWValues = "(";
 
       for (let n = 0; n < i; n++) {
-        //factor += lower[i][n] * upper[n][j];
         factor += matrixLU[i][n] * matrixLU[n][j];
 
         factorEq +=
@@ -123,11 +122,9 @@ function gaussElimiation() {
           underIndex("u", n + 1 + "" + (j + 1)) +
           " + ";
 
-        //factorEqWValues += lower[i][n] + ' * ' + upper[n][j] + '\\small + ';
         factorEqWValues += matrixLU[i][n] + "(" + matrixLU[n][j] + ") + ";
       }
 
-      //upper[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
       matrixLU[i][j] = math.round(origin[i][j] - factor, 3);
 
       factorEq = factorEq.slice(0, -3) + ")";
@@ -147,7 +144,6 @@ function gaussElimiation() {
         " - " +
         factorEqWValues;
 
-      //equationResult = underIndex('u', (i + 1) + '' + (j + 1)) + '\\normalsize =' + upper[i][j];
       equationResult =
         underIndex("u", i + 1 + "" + (j + 1)) + " = " + matrixLU[i][j];
 
@@ -174,6 +170,7 @@ function gaussElimiation() {
       wasCalc = false;
     }
 
+    //a partir da segunda coluna
     finalEquations = [];
 
     for (let j = i + 1; j < origin.length; j++) {
@@ -185,7 +182,6 @@ function gaussElimiation() {
       factorEqWValues = "(";
 
       for (let n = 0; n < i; n++) {
-        //factor += lower[j][n] * upper[n][i];
         factor += matrixLU[j][n] * matrixLU[n][i];
 
         factorEq +=
@@ -193,17 +189,14 @@ function gaussElimiation() {
           underIndex("u", n + 1 + "" + (i + 1)) +
           " + ";
 
-        //factorEqWValues += lower[j][n] + " * " + upper[n][i] + "\\small + ";
         factorEqWValues += matrixLU[j][n] + "(" + matrixLU[n][i] + ") + ";
       }
 
-      //lower[j][i] = Math.round(((origin[i][i] - factor) / upper[i][i]) * 100) / 100;
       matrixLU[j][i] = math.round(origin[j][i] - factor, 3);
 
       factorEq = factorEq.slice(0, -3) + ")";
       factorEqWValues = factorEqWValues.slice(0, -3) + ")";
 
-      //equation = 'l' + (j + 1) + "" + (i + 1) + " = a" + (i + 1) + "" + (i + 1) + " - " + factorEq + " / " + "u" + (i + 1) + "" + (i + 1);
       equation =
         underIndex("l", j + 1 + "" + (i + 1)) +
         " = " +
@@ -213,11 +206,6 @@ function gaussElimiation() {
         "}{" +
         underIndex("u", i + 1 + "" + (i + 1)) +
         "}";
-
-      /*equationWValues = underIndex('l', (j + 1) + '' + (i + 1))
-        + " = " + origin[i][j]
-        + " - \\frac{" + factor + "}{ "
-        + upper[i][i] + "}";*/
 
       equationWValues =
         underIndex("l", j + 1 + "" + (i + 1)) +
@@ -229,11 +217,9 @@ function gaussElimiation() {
         matrixLU[i][i] +
         "}";
 
-      //equationResult = underIndex('l', (j + 1) + '' + (i + 1)) + " = " + lower[j][i];
       equationResult =
         underIndex("l", j + 1 + "" + (i + 1)) + " = " + matrixLU[j][i];
 
-      //console.log(equation + "\n" + equationWValues + "\n" + equationResult);
       finalEquations.push(
         katex.renderToString(
           "\\begin{matrix} " +
@@ -269,11 +255,6 @@ function gaussElimiation() {
     l: getLUMatrix(matrixLU, "l", matrixLU.length - 2),
     u: getLUMatrix(matrixLU, "u", matrixLU.length - 1)
   };
-
-  //addStepsSet(steps)
-  //stepContent = formMatrix([[1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10], [11,12,13,-14]]) + formMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-  //step = stepSection('Teste de seção', stepContent);
-  //show.innerHTML = step + step;
 }
 
 function showOperationButton() {
@@ -287,5 +268,8 @@ function showOperationButton() {
 }
 
 function hideOperationButton() {
+  /*
+    Esconder o botão de ação
+  */
   document.getElementById("btn").innerHTML = "";
 }

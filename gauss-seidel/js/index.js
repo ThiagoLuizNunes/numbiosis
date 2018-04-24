@@ -11,19 +11,13 @@ function jacobi() {
   let oldX = [];
   let actualError = 0;
 
-  /*origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
-  bVector = [[7], [-8], [6]];
-  xVector = [[0.7], [-1.6], [0.6]];
-  error = 0.05;
-  maxIter = 10;*/
-
   origin = [[5, 1, 1], [3, 4, 1], [3, 3, 6]];
   bVector = [[5], [6], [0]];
   xVector = [[0], [0], [0]];
   error = 5e-2;
   maxIter = 10;
 
-  /*if (
+  if (
     origin == null ||
     bVector == null ||
     xVector == null ||
@@ -45,7 +39,7 @@ function jacobi() {
   } else if (!rowCriterion(origin)) {
     alert("A matriz não atende ao Critério de Linha");
     return;
-  }*/
+  }
 
   bVector = toArray(bVector);
   xVector = toArray(xVector);
@@ -54,6 +48,7 @@ function jacobi() {
 
   xTrack.push(xVector.slice());
 
+  //apresentação do sistema
   showSystem(origin, bVector);
 
   //matriz com os valores dividios pelo elemento da diagonal
@@ -68,6 +63,7 @@ function jacobi() {
     }
   }
 
+  //apresentação das equações da função de iteração
   showIteractionFuntion(origin, matrixMult, bVector);
 
   //iterações do método de Gauss-Seidel
@@ -155,10 +151,10 @@ function jacobi() {
       (equations = finalEquations)
     );
 
-    // Calculo do erro
-
+    //calculo do erro
     actualError = erroCalc(newX, oldX);
 
+    //apresentação da equação do calculo do erro
     showErrorCalc(newX, oldX, actualError, k);
 
     xTrack.push(newX.slice());
@@ -170,14 +166,17 @@ function jacobi() {
     (equations = [katex.renderToString("e = " + actualError)])
   );
 
-  /*console.log(xTrack);
-  console.log(actualError);
-  console.log(newX);*/
-
   return xTrack;
 }
 
 function showSystem(matrix, bVector) {
+  /*
+    Apresentação do sistema que está sendo trabalhado
+    Params:
+      matrix: matriz inicial
+      bVector: vetor b
+  */
+
   //preparando a exibição do sistema completo
   let xMatrix = [];
 
@@ -206,6 +205,14 @@ function showOperationButton() {
 }
 
 function showIteractionFuntion(matrix, matrixMult, bVector) {
+  /*
+    Apresentar equações de funções de iteração
+    Params:
+      matrix: matriz inicial
+      matrixMult: matriz inicial dividida pela diagonal principal
+      bVector: vetor b
+  */
+
   //preparando a exibição da função de iteração
   let xMatrix = [];
 
@@ -213,6 +220,7 @@ function showIteractionFuntion(matrix, matrixMult, bVector) {
   for (let i = 0; i < matrix.length; i++) {
     xMatrix.push([underIndex("x", i + 1) + "^{(k+1)}"]);
   }
+
   //preparando a funação de iteração
   let funcIterationEquation = "";
   let funcIterationEquationWValues = "";
@@ -261,6 +269,15 @@ function showIteractionFuntion(matrix, matrixMult, bVector) {
 }
 
 function showErrorCalc(newX, oldX, actualError, k) {
+  /*
+    Apresentação da equação de calculo do erro
+    Params:
+      newX: array do novo X
+      oldX: array do antigo X
+      actualError: erro atual
+      k: iteração K
+  */
+
   addStep(
     (title = "Erro da Iteração k = " + k),
     (matrix = ""),
@@ -287,9 +304,15 @@ function showErrorCalc(newX, oldX, actualError, k) {
 }
 
 function hideOperationButton() {
+  /*
+    Esconder botão de ação
+  */
   document.getElementById("btn").innerHTML = "";
 }
 
 function hidePlot() {
+  /*
+    Esconder div de plotagem
+  */
   document.getElementById("plotDiv").innerHTML = "";
 }

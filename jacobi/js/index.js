@@ -51,6 +51,7 @@ function jacobi() {
 
   xTrack.push(xVector.slice());
 
+  //apresentar o sistema que está sendo trabalhado
   showSystem(origin, bVector);
 
   //matriz com os valores dividios pelo elemento da diagonal
@@ -65,6 +66,7 @@ function jacobi() {
     }
   }
 
+  //apresendar a equação da função de iteração
   showIteractionFuntion(origin, matrixMult, bVector);
 
   //iterações do método de Jacobi
@@ -77,6 +79,7 @@ function jacobi() {
   let equationResult = "";
   let finalEquations = [];
 
+  //iteração do Método de Jacobi
   do {
     k++;
     oldX = newX.slice();
@@ -141,10 +144,10 @@ function jacobi() {
       (equations = finalEquations)
     );
 
-    // Calculo do erro
-
+    //calculo do erro
     actualError = erroCalc(newX, oldX);
 
+    //apresentar equação do calculo do erro
     showErrorCalc(newX, oldX, actualError, k);
 
     xTrack.push(newX.slice());
@@ -156,14 +159,17 @@ function jacobi() {
     (equations = [katex.renderToString("e = " + actualError)])
   );
 
-  /*console.log(xTrack);
-  console.log(actualError);
-  console.log(newX);*/
-
   return xTrack;
 }
 
 function showSystem(matrix, bVector) {
+  /*
+    Apresentação do sistema que está sendo trabalhado
+    Params:
+      matrix: matriz inicial
+      bVector: vetor b
+  */
+
   //preparando a exibição do sistema completo
   let xMatrix = [];
 
@@ -192,6 +198,14 @@ function showOperationButton() {
 }
 
 function showIteractionFuntion(matrix, matrixMult, bVector) {
+  /*
+    Apresentar equações de funções de iteração
+    Params:
+      matrix: matriz inicial
+      matrixMult: matriz inicial dividida pela diagonal principal
+      bVector: vetor b
+  */
+
   //preparando a exibição da função de iteração
   let xMatrix = [];
 
@@ -239,6 +253,14 @@ function showIteractionFuntion(matrix, matrixMult, bVector) {
 }
 
 function showErrorCalc(newX, oldX, actualError, k) {
+  /*
+    Apresentação da equação de calculo do erro
+    Params:
+      newX: array do novo X
+      oldX: array do antigo X
+      actualError: erro atual
+      k: iteração K
+  */
   addStep(
     (title = "Erro da Iteração k = " + k),
     (matrix = ""),
@@ -265,9 +287,15 @@ function showErrorCalc(newX, oldX, actualError, k) {
 }
 
 function hideOperationButton() {
+  /*
+    Esconder botão de ação
+  */
   document.getElementById("btn").innerHTML = "";
 }
 
 function hidePlot() {
+  /*
+    Esconder div de plotagem
+  */
   document.getElementById("plotDiv").innerHTML = "";
 }

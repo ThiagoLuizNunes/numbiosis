@@ -22,7 +22,6 @@ function cholesky() {
     alert("A matriz não atende ao Critério de Sylvester");
     return;
   }
-  //console.log(isSymmetric(origin))
 
   let matrixG = getLUMatrix(origin, "g", (label = "g"));
   let matrixGWValues = copyMatrix(matrixG);
@@ -40,6 +39,7 @@ function cholesky() {
     (equations = [katex.renderToString("A = GG^T")])
   );
 
+  //calculo do Fator de Cholesky
   let equation = "";
   let equationWValues = "";
   let equationResult = 0;
@@ -70,13 +70,16 @@ function cholesky() {
           factorEquationWValues += negative(matrixGWValues[j][n]) + "^2 + ";
         }
 
-        matrixGWValues[i][j] =
-          Math.round(Math.sqrt(origin[i][j] - factorFinal) * 1000) / 1000;
+        matrixGWValues[i][j] = math.round(
+          math.sqrt(origin[i][j] - factorFinal),
+          3
+        );
 
         if (factorEquation !== "- (") {
           factorEquation = factorEquation.slice(0, -3) + ")";
           factorEquationWValues = factorEquationWValues.slice(0, -3) + ")";
         } else {
+          //para a primeira equação
           factorEquation = factorEquationWValues = "";
         }
 
@@ -96,11 +99,6 @@ function cholesky() {
 
         equationResult =
           underIndex("g", i + 1 + "" + (j + 1)) + " = " + matrixGWValues[i][j];
-
-        /*console.log(equation);
-        console.log(equationWValues);
-        console.log(equationResult);
-        console.log('');*/
       } else {
         factorEquation = "";
         factorEquationWValues = "";
@@ -146,11 +144,6 @@ function cholesky() {
 
         equationResult =
           underIndex("g", i + 1 + "" + (j + 1)) + " = " + matrixGWValues[i][j];
-
-        /*console.log(equation);
-        console.log(equationWValues);
-        console.log(equationResult);
-        console.log('');*/
       }
 
       finalEquations.push(
@@ -164,8 +157,6 @@ function cholesky() {
             "\\end{matrix}"
         )
       );
-
-      //console.log(finalEquations.length);
     }
 
     addStep(
@@ -183,7 +174,7 @@ function cholesky() {
 
 function showOperationButton() {
   /*
-    Mostra o botão de ação para utilizar o método de eliminação de Gauss
+    Mostra o botão de ação
   */
 
   var btn = document.getElementById("btn");
@@ -192,5 +183,8 @@ function showOperationButton() {
 }
 
 function hideOperationButton() {
+  /*
+    Esconder o botão de ação
+  */
   document.getElementById("btn").innerHTML = "";
 }
