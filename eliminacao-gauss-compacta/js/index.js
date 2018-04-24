@@ -1,7 +1,9 @@
 function gaussElimiation() {
-  //let show = document.getElementById('steps');
   hideSteps();
   let origin = getTableValues();
+
+  //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
+  //origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
 
   if (origin == null) {
     alert("Preencha todos os campos!");
@@ -14,17 +16,14 @@ function gaussElimiation() {
     return;
   }
 
-  //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
-  //origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
-  //pivoting(origin, 2);
-
-  let pivot = pivoting(copyMatrix(origin));
-
-  //getLUMatrix(matrixLU, 'u', 2);
+  //apresentação da matriz inicial
   addStep(
     (title = "Matriz inicial"),
     (matrix = maTex(origin, "A =") + maTex(getLUMatrix(origin, "a"), "A ="))
   );
+
+  //aplica o pivoteamento para tirar os '0' da diagonal principal
+  let pivot = pivoting(copyMatrix(origin));
 
   if (pivot != null) {
     origin = copyMatrix(pivot);
@@ -35,38 +34,8 @@ function gaussElimiation() {
   }
 
   let matrixLU = copyMatrix(origin);
-  /*let pivot = checkPivoting(origin);
-  if (pivot >= 0) {
-    pivoting(origin, pivot);
-    pivoting(matrixLU, pivot);
-    addStep(
-      (title = "Pivoteamento na linha " + (pivot + 1)),
-      (matrix = maTex(origin, "A ="))
-    );
-  }*/
 
-  /*let lower = [];
-  let upper = [];
-
-  for (let i = 0; i < origin.length; i++) {
-    let rowL = [];
-    let rowU = [];
-    for (let j = 0; j < origin[i].length; j++) {
-      if (j >= i) {
-        rowL.push(0);
-        rowU.push(underIndex('u', (i + 1) + "" + (j + 1)))
-      } else {
-        rowL.push(underIndex('l', (i + 1) + "" + (j + 1)))
-        rowU.push(0)
-      }
-    }
-    lower.push(rowL);
-    upper.push(rowU);
-  }
-  // primeira linha da U
-  upper[0] = origin[0];*/
-
-  //console.log("uij = aij; j = 1, 2, ..., n");
+  //apresentação da matriz U com a primeira linha
   addStep(
     (title = "Linha 1 da Matriz U"),
     (matrix = maTex(getLUMatrix(matrixLU, "u", 0), "U = ")),
@@ -82,7 +51,7 @@ function gaussElimiation() {
     ]
   );
 
-  // primeir coluna da L
+  //primeira coluna da L
   let equations = [];
 
   equations.push(
@@ -100,12 +69,8 @@ function gaussElimiation() {
   );
 
   for (let i = 1; i < origin[0].length; i++) {
-    //lower[i][0] = Math.round((origin[i][0] / upper[0][0]) * 100) / 100;
-    matrixLU[i][0] = Math.round(origin[i][0] / matrixLU[0][0] * 100) / 100;
+    matrixLU[i][0] = math.round(origin[i][0] / matrixLU[0][0], 3);
 
-    //equations.push(katex.renderToString(underIndex('l', (i + 1) + "1") + " = "
-    //  + " \\frac{" + origin[i][0] + "}{" + upper[0][0] + "}"
-    //  + " = " + lower[i][0]))
     equations.push(
       katex.renderToString(
         underIndex("l", i + 1 + "1") +
@@ -121,13 +86,14 @@ function gaussElimiation() {
     );
   }
 
+  //apresentação da primeira coluna da matriz L
   addStep(
     (title = "Coluna 1 da Matriz L"),
     (matrix = maTex(getLUMatrix(matrixLU, "l", 0), "L = ")),
     equations
   );
 
-  // a partir da segunda linha e segunda coluna
+  //a partir da segunda linha e segunda coluna
   let wasCalc = false;
   let equationWValues = "";
   let equationResult = "";
@@ -145,7 +111,7 @@ function gaussElimiation() {
       equationWValues = "";
       equationResult = "";
       factor = 0;
-      factorEq = "\\raisebox{0em}{(}";
+      factorEq = "(";
       factorEqWValues = "(";
 
       for (let n = 0; n < i; n++) {
@@ -154,26 +120,24 @@ function gaussElimiation() {
 
         factorEq +=
           underIndex("l", i + 1 + "" + (n + 1)) +
-          " \\kern0.1em \\raisebox{0em}{*} \\kern0.1em" +
           underIndex("u", n + 1 + "" + (j + 1)) +
-          "\\small + ";
+          " + ";
 
         //factorEqWValues += lower[i][n] + ' * ' + upper[n][j] + '\\small + ';
-        factorEqWValues +=
-          matrixLU[i][n] + " * " + matrixLU[n][j] + "\\small + ";
+        factorEqWValues += matrixLU[i][n] + "(" + matrixLU[n][j] + ") + ";
       }
 
       //upper[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
-      matrixLU[i][j] = Math.round((origin[i][j] - factor) * 100) / 100;
+      matrixLU[i][j] = math.round(origin[i][j] - factor, 3);
 
-      factorEq = factorEq.slice(0, -3) + "\\raisebox{0em}{)}";
+      factorEq = factorEq.slice(0, -3) + ")";
       factorEqWValues = factorEqWValues.slice(0, -3) + ")";
 
       equation =
         underIndex("u", i + 1 + "" + (j + 1)) +
-        " = \\kern0.1em " +
+        " = " +
         underIndex("a", i + 1 + "" + (j + 1)) +
-        "\\kern0.1em - \\kern0.1em" +
+        " - " +
         factorEq;
 
       equationWValues =
@@ -217,7 +181,7 @@ function gaussElimiation() {
       equationWValues = "";
       equationResult = "";
       factor = 0;
-      factorEq = "\\raisebox{0em}{(}";
+      factorEq = "(";
       factorEqWValues = "(";
 
       for (let n = 0; n < i; n++) {
@@ -226,20 +190,17 @@ function gaussElimiation() {
 
         factorEq +=
           underIndex("l", j + 1 + "" + (n + 1)) +
-          " \\kern0.1em \\raisebox{0em}{*} \\kern0.1em" +
           underIndex("u", n + 1 + "" + (i + 1)) +
-          "\\small + ";
+          " + ";
 
         //factorEqWValues += lower[j][n] + " * " + upper[n][i] + "\\small + ";
-        factorEqWValues +=
-          matrixLU[j][n] + " * " + matrixLU[n][i] + "\\small + ";
+        factorEqWValues += matrixLU[j][n] + "(" + matrixLU[n][i] + ") + ";
       }
 
       //lower[j][i] = Math.round(((origin[i][i] - factor) / upper[i][i]) * 100) / 100;
-      matrixLU[j][i] =
-        Math.round((origin[j][i] - factor) / matrixLU[i][i] * 100) / 100;
+      matrixLU[j][i] = math.round(origin[j][i] - factor, 3);
 
-      factorEq = factorEq.slice(0, -3) + "\\raisebox{0em}{)}";
+      factorEq = factorEq.slice(0, -3) + ")";
       factorEqWValues = factorEqWValues.slice(0, -3) + ")";
 
       //equation = 'l' + (j + 1) + "" + (i + 1) + " = a" + (i + 1) + "" + (i + 1) + " - " + factorEq + " / " + "u" + (i + 1) + "" + (i + 1);
@@ -303,6 +264,11 @@ function gaussElimiation() {
       maTex(getLUMatrix(matrixLU, "l", matrixLU.length - 2), "L =") +
       maTex(getLUMatrix(matrixLU, "u", matrixLU.length - 1), "U ="))
   );
+
+  return {
+    l: getLUMatrix(matrixLU, "l", matrixLU.length - 2),
+    u: getLUMatrix(matrixLU, "u", matrixLU.length - 1)
+  };
 
   //addStepsSet(steps)
   //stepContent = formMatrix([[1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10], [11,12,13,-14]]) + formMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])

@@ -110,21 +110,21 @@ function cholesky() {
           factorFinal -= matrixGWValues[i][n] * matrixGWValues[j][n];
 
           factorEquation +=
-            "-" +
+            " - " +
             underIndex("g", i + 1 + "" + (n + 1)) +
-            " * " +
             underIndex("g", j + 1 + "" + (n + 1));
           factorEquationWValues +=
-            "-" +
+            " - " +
             negative(matrixGWValues[i][n]) +
-            "*" +
-            negative(matrixGWValues[j][n]);
+            "(" +
+            matrixGWValues[j][n] +
+            ")";
         }
 
-        matrixGWValues[i][j] =
-          Math.round(
-            (origin[j][i] + factorFinal) / matrixGWValues[j][j] * 1000
-          ) / 1000;
+        matrixGWValues[i][j] = math.round(
+          (origin[j][i] + factorFinal) / matrixGWValues[j][j],
+          3
+        );
 
         equation =
           underIndex("g", i + 1 + "" + (j + 1)) +

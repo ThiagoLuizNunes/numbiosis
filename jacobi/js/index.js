@@ -11,14 +11,14 @@ function jacobi() {
   let oldX = [];
   let actualError = 0;
 
-  /*origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
+  origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
 
   bVector = [[7], [-8], [6]];
 
   xVector = [[0.7], [-1.6], [0.6]];
 
   error = 0.05;
-  maxIter = 10;*/
+  maxIter = 10;
 
   if (
     origin == null ||
@@ -100,13 +100,12 @@ function jacobi() {
           newValueEquation +=
             " - " +
             negative(matrixMult[i][j]) +
-            " * " +
             underIndex("x", j + 1) +
             "^{(" +
             k +
             ")}";
           newValueEquationWValues +=
-            " - " + negative(matrixMult[i][j]) + " * " + negative(oldX[j]);
+            " - " + negative(matrixMult[i][j]) + "(" + oldX[j] + ")";
         }
       }
 
@@ -213,15 +212,10 @@ function showIteractionFuntion(matrix, matrixMult, bVector) {
     for (let j = 0; j < matrix[i].length; j++) {
       if (j != i) {
         funcIterationEquation +=
-          " - " +
-          negative(matrix[i][j]) +
-          " * " +
-          underIndex("x", j + 1) +
-          "^{(k)}";
+          " - " + negative(matrix[i][j]) + underIndex("x", j + 1) + "^{(k)}";
         funcIterationEquationWValues +=
           " - " +
           negative(matrixMult[i][j]) +
-          " * " +
           underIndex("x", j + 1) +
           "^{(k)}";
       }
@@ -250,11 +244,11 @@ function showErrorCalc(newX, oldX, actualError, k) {
     (matrix = ""),
     (equations = [
       katex.renderToString(
-        "e = \\dfrac{max\\{|x^{(" +
+        "e = \\dfrac{\\max\\{|x^{(" +
           (k + 1) +
           ")} - x^{(" +
           k +
-          ")}|\\}}{max\\{|x^{(" +
+          ")}|\\}}{\\max\\{|x^{(" +
           (k + 1) +
           ")}|\\}}"
       ),

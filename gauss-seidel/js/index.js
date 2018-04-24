@@ -103,25 +103,23 @@ function jacobi() {
           newValueEquation +=
             " - " +
             negative(matrixMult[i][j]) +
-            " * " +
             underIndex("x", j + 1) +
             "^{(" +
             (k + 1) +
             ")}";
           newValueEquationWValues +=
-            " - " + negative(matrixMult[i][j]) + " * " + negative(newX[j]);
+            " - " + negative(matrixMult[i][j]) + "(" + newX[j] + ")";
         } else if (j > i) {
           newValue -= Math.round(matrixMult[i][j] * oldX[j] * 1000) / 1000;
           newValueEquation +=
             " - " +
             negative(matrixMult[i][j]) +
-            " * " +
             underIndex("x", j + 1) +
             "^{(" +
             k +
             ")}";
           newValueEquationWValues +=
-            " - " + negative(matrixMult[i][j]) + " * " + negative(oldX[j]);
+            " - " + negative(matrixMult[i][j]) + "(" + oldX[j] + ")";
         }
       }
 
@@ -204,7 +202,7 @@ function showOperationButton() {
 
   var btn = document.getElementById("btn");
   btn.innerHTML =
-    '<a class="waves-effect waves-light btn-large" onclick="plot()">Aplicar Método de Gauss-Sei   del</a>';
+    '<a class="waves-effect waves-light btn-large" onclick="plot()">Aplicar Método de Gauss-Seidel</a>';
 }
 
 function showIteractionFuntion(matrix, matrixMult, bVector) {
@@ -228,28 +226,18 @@ function showIteractionFuntion(matrix, matrixMult, bVector) {
     for (let j = 0; j < matrix[i].length; j++) {
       if (j < i) {
         funcIterationEquation +=
-          " - " +
-          negative(matrix[i][j]) +
-          " * " +
-          underIndex("x", j + 1) +
-          "^{(k+1)}";
+          " - " + negative(matrix[i][j]) + underIndex("x", j + 1) + "^{(k+1)}";
         funcIterationEquationWValues +=
           " - " +
           negative(matrixMult[i][j]) +
-          " * " +
           underIndex("x", j + 1) +
           "^{(k+1)}";
       } else if (j > i) {
         funcIterationEquation +=
-          " - " +
-          negative(matrix[i][j]) +
-          " * " +
-          underIndex("x", j + 1) +
-          "^{(k)}";
+          " - " + negative(matrix[i][j]) + underIndex("x", j + 1) + "^{(k)}";
         funcIterationEquationWValues +=
           " - " +
           negative(matrixMult[i][j]) +
-          " * " +
           underIndex("x", j + 1) +
           "^{(k)}";
       }
@@ -278,11 +266,11 @@ function showErrorCalc(newX, oldX, actualError, k) {
     (matrix = ""),
     (equations = [
       katex.renderToString(
-        "e = \\dfrac{max\\{|x^{(" +
+        "e = \\dfrac{\\max\\{|x^{(" +
           (k + 1) +
           ")} - x^{(" +
           k +
-          ")}|\\}}{max\\{|x^{(" +
+          ")}|\\}}{\\max\\{|x^{(" +
           (k + 1) +
           ")}|\\}}"
       ),
