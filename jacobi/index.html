@@ -56,12 +56,31 @@
                 if (track[0].length <= 3) {
 
                     // gera o mapeamento das cores
-                    let colors = (tam) => {
+                    /*let colors = (tam) => {
                         let colors = [];
                         for (let i = 0; i < tam; i++) {
                             colors.push(i);
                         }
                         return colors;
+                    }*/
+
+                    let colors = (tam) => {
+                        let colors = [];
+                        for (let i = 0; i < tam; i++) {
+                            colors.push("rgb(" + Math.round((127 * i) / tam + 128) + "," + Math.round(128 - (127 * i) / tam) + "," + Math.round(128 - (127 * i) / tam) + ")");
+                        }
+                        return colors;
+                    }
+
+                    let colorScale = (tam, colors) => {
+                        let scale = [];
+
+                        for (let i = 0; i < tam; i++) {
+                            scale.push([math.round(i / tam, 2), colors[i]]);
+                        }
+
+                        console.log(scale)
+                        return scale;
                     }
 
                     let getValues = (valuesMatrix, index) => {
@@ -99,7 +118,7 @@
                                 marker: {
                                     size: 3,
                                     symbol: "diamond",
-                                    color: colors(track.length),
+                                    color: colors(track.length)[1],
                                     colorbar: { x: -0.155 }
                                 },
                                 lines: {
@@ -124,6 +143,20 @@
                             },
                         };*/
 
+                        trace = {
+                            type: 'scatter3d',
+                            x: getValues(track, 0),
+                            y: getValues(track, 1),
+                            z: getValues(track, 2),
+                            mode: 'lines',
+                            name: "Movimento",
+                            line: {
+                                color: "rgb(0,0,255)",
+                                width: 5,
+                                dash: "dash",
+                            },
+                        };
+
                         for (let i = 0; i < track.length; i++) {
                             traces.push({
                                 type: "scatter3d",
@@ -134,8 +167,8 @@
                                 marker: {
                                     size: 3,
                                     symbol: "diamond",
-                                    color: colors(track.length),
-                                    colorbar: { x: -0.155 }
+                                    color: colors(track.length)[i]
+
                                 },
                                 lines: {
                                     color: colors(track.length)[i],
@@ -143,7 +176,11 @@
                                 name: "x" + i,
                             })
                         }
+
+                        traces[0].marker.colorbar = { x: -0.155 };
                     }
+
+                    traces.push(trace);
 
                     let layout = {
                         title: "Aproximações das Soluções   ",
