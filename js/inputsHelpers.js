@@ -65,6 +65,9 @@ function dimHandlerSys(
     createMatrixInput(dimValue, 1, bVectorId, "bvector-input", "b");
     showOperationButton();
     hideSteps();
+    if (hidePlot) {
+      hidePlot();
+    }
   }
 }
 

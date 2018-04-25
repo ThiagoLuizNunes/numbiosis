@@ -1,7 +1,7 @@
 function stepSection(title, content) {
   /*
       Cria uma seção 'step'
-    */
+  */
   let step = '<div class="step">';
 
   step += '<div class="step-title"><h5>' + title + "</h5></div>";
@@ -14,12 +14,19 @@ function stepSection(title, content) {
 function hideSteps() {
   /*
       Remove o conteúdo da div 'steps'
-    */
+  */
   let steps = document.getElementById("steps");
   steps.innerHTML = "";
 }
 
 function addStep(title = "", matrix = "", equations = []) {
+  /*
+    Adicina um passo da div de passos
+    Params:
+      - title: título do passo
+      - matrix: matriz resultante do cálculo
+      - euquations: equações utilizadas
+  */
   let show = document.getElementById("steps");
   let fotmatedMatrix = '<div class="step-matrix">' + matrix + "</div>";
   let step = "";
