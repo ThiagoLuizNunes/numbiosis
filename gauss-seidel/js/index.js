@@ -26,11 +26,7 @@ function jacobi() {
   ) {
     alert("Preencha todos os campos!");
     return;
-  } else if (
-    isNullMatrix(origin) ||
-    isNullMatrix(bVector) ||
-    isNullMatrix(xVector)
-  ) {
+  } else if (isNullMatrix(origin)) {
     alert("Nenhuma matriz não pode ser nula!");
     return;
   } else if (math.det(origin) == 0) {

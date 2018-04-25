@@ -54,34 +54,21 @@
                 let track = jacobi();
 
                 if (track[0].length <= 3) {
-
-                    // gera o mapeamento das cores
-                    /*let colors = (tam) => {
-                        let colors = [];
-                        for (let i = 0; i < tam; i++) {
-                            colors.push(i);
-                        }
-                        return colors;
-                    }*/
-
                     let colors = (tam) => {
                         let colors = [];
                         for (let i = 0; i < tam; i++) {
-                            colors.push("rgb(" + Math.round((127 * i) / tam + 128) + "," + Math.round(128 - (127 * i) / tam) + "," + Math.round(128 - (127 * i) / tam) + ")");
+                            colors.push("rgb("
+                                + Math.round((127 * i) / tam + 128)
+                                + ","
+                                + Math.round(128 - (127 * i) / tam)
+                                + ","
+                                + Math.round(128 - (127 * i) / tam)
+                                + ")");
                         }
                         return colors;
                     }
 
-                    let colorScale = (tam, colors) => {
-                        let scale = [];
-
-                        for (let i = 0; i < tam; i++) {
-                            scale.push([math.round(i / tam, 2), colors[i]]);
-                        }
-
-                        console.log(scale)
-                        return scale;
-                    }
+                    let colorsSet = colors(track.length);
 
                     let getValues = (valuesMatrix, index) => {
                         let values = [];
@@ -92,56 +79,47 @@
                         return values;
                     }
 
+                    let initArray = (n) => {
+                        return Array.apply(null, Array(n));
+                    };
+
                     let trace = {};
                     let traces = [];
 
                     // Informações para a plotagem
                     if (track[0].length == 2) {
-                        /*trace = {
-                            type: 'scatter3d',
+                        trace = {
+                            type: 'scatter',
                             x: getValues(track, 0),
                             y: getValues(track, 1),
-                            mode: 'markers',
-                            marker: {
-                                size: 10,
-                                color: colors(track.length),
-                                colorbar: { x: -0.155 }
+                            mode: 'lines',
+                            name: "Movimento",
+                            line: {
+                                color: "rgb(0,0,255)",
+                                width: 2,
+                                dash: "dash",
                             },
-                        };*/
+                        };
 
                         for (let i = 0; i < track.length; i++) {
                             traces.push({
-                                type: "scatter3d",
+                                type: "scatter",
                                 x: [0, track[i][0]],
                                 y: [0, track[i][1]],
                                 mode: 'lines+markers',
                                 marker: {
                                     size: 3,
                                     symbol: "diamond",
-                                    color: colors(track.length)[1],
-                                    colorbar: { x: -0.155 }
+                                    color: colorsSet[1],
                                 },
-                                lines: {
-                                    color: colors(track.length)[i],
+                                line: {
+                                    color: colorsSet[i],
                                 },
                                 name: "x" + i,
                             })
                         }
 
                     } else {
-                        /*trace = {
-                            type: 'scatter3d',
-                            x: getValues(track, 0),
-                            y: getValues(track, 1),
-                            z: getValues(track, 2),
-                            mode: 'markers',
-                            marker: {
-                                size: 2,
-                                symbol: "diamond",
-                                color: colors(track.length),
-                                colorbar: { x: -0.155 }
-                            },
-                        };*/
 
                         trace = {
                             type: 'scatter3d',
@@ -167,23 +145,34 @@
                                 marker: {
                                     size: 3,
                                     symbol: "diamond",
-                                    color: colors(track.length)[i]
-
+                                    color: colorsSet[i]
                                 },
-                                lines: {
-                                    color: colors(track.length)[i],
+                                line: {
+                                    width: track.length + 4 - i,
+                                    color: colorsSet[i],
                                 },
                                 name: "x" + i,
                             })
                         }
-
-                        traces[0].marker.colorbar = { x: -0.155 };
                     }
 
                     traces.push(trace);
 
+                    let colorScale = colorsSet.map((c, i) => [1 / (colorsSet.length - 1), c]);
+
+                    traces.push({
+                        y: initArray(track.length).map(() => 0),
+                        opacity: 0,
+                        hoverinfo: "none",
+                        marker: {
+                            color: initArray(track.length).map((_, i) => i),
+                            colorscale: colorScale,
+                            colorbar: { x: -0.155 }
+                        }
+                    });
+
                     let layout = {
-                        title: "Aproximações das Soluções   ",
+                        title: "Aproximações das Soluções",
                     }
 
                     Plotly.newPlot('plotDiv', traces, layout);
