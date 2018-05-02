@@ -363,3 +363,60 @@ function erroCalc(newVector, oldVector) {
     math.max(math.abs(newVector))
   );
 }
+
+function factLU(matrix) {
+  let matrixLU = copyMatrix(matrix);
+
+  //primeira coluna da L
+
+  for (let i = 1; i < matrix[0].length; i++) {
+    matrixLU[i][0] = math.round(matrix[i][0] / matrixLU[0][0], 3);
+  }
+
+  //a partir da segunda linha e segunda coluna
+  let factor = 0;
+
+  for (let i = 1; i < matrix.length; i++) {
+    // próxima linha de U
+    for (let j = i; j < matrix[i].length; j++) {
+      factor = 0;
+      for (let n = 0; n < i; n++) {
+        factor += matrixLU[i][n] * matrixLU[n][j];
+      }
+
+      matrixLU[i][j] = math.round(matrix[i][j] - factor, 3);
+    }
+
+    //a partir da segunda coluna
+
+    for (let j = i + 1; j < matrix.length; j++) {
+      factor = 0;
+
+      for (let n = 0; n < i; n++) {
+        factor += matrixLU[j][n] * matrixLU[n][i];
+      }
+
+      matrixLU[j][i] = math.round(matrix[j][i] - factor, 3);
+    }
+  }
+
+  return {
+    origin: copyMatrix(matrixLU),
+    l: getLUMatrix(matrixLU, "l", matrixLU.length - 2),
+    u: getLUMatrix(matrixLU, "u", matrixLU.length - 1)
+  };
+}
+
+function getDiagonal(matrix) {
+  let diagonal = copyMatrix(matrix);
+
+  for (let i = 0; i < diagonal.length; i++) {
+    for (let j = 0; j < diagonal[i].length; j++) {
+      if (i != j) {
+        diagonal[i][j] = 0;
+      }
+    }
+  }
+
+  return diagonal;
+}

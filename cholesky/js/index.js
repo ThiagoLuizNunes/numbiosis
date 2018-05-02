@@ -2,12 +2,14 @@ function cholesky() {
   hideSteps();
   let origin = getTableValues();
 
-  origin = [
+  /*origin = [
     [16, -4, 12, -4],
     [-4, 2, -1, 1],
     [12, -1, 14, -2],
     [-4, 1, -2, 83]
-  ];
+  ];*/
+
+  origin = [[4, 12, -16], [12, 37, -43], [-16, -43, 98]];
 
   if (origin == null) {
     alert("Preencha todos os campos!");
@@ -169,6 +171,25 @@ function cholesky() {
   addStep(
     (title = "Fator de Cholesky"),
     (matrix = maTex(matrixGWValues, "G ="))
+  );
+
+  addStep(
+    (title = "Fatoração " + katex.renderToString("A = GG^T")),
+    (matrix =
+      maTex(origin) +
+      maTex(matrixGWValues, "=") +
+      maTex(math.transpose(matrixGWValues)))
+  );
+
+  let matrixLU = factLU(matrixGWValues);
+
+  addStep(
+    (title = "Fatoração " + katex.renderToString("A = LDL^T")),
+    (matrix =
+      maTex(origin) +
+      maTex(matrixLU.l, "=") +
+      maTex(math.pow(getDiagonal(matrixLU.origin), 2)) +
+      maTex(math.transpose(matrixLU.l)))
   );
 }
 
