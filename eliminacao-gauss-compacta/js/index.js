@@ -2,8 +2,8 @@ function gaussElimiation() {
   hideSteps();
   let origin = getTableValues();
 
-  origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
-  //origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
+  //origin = [[5, 2, 1], [3, 1, 4], [1, 1, 3]];
+  origin = [[10, 2, -1], [-3, -6, 2], [1, 5, 5]];
 
   if (origin == null) {
     alert("Preencha todos os campos!");

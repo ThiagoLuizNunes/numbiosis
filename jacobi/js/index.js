@@ -11,19 +11,18 @@ function jacobi() {
   let oldX = [];
   let actualError = 0;
 
-  /*origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
+  origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
 
   bVector = [[7], [-8], [6]];
 
   xVector = [[0.7], [-1.6], [0.6]];
-  */
 
   /*origin = [[10, 2], [1, 5]];
   bVector = [[7], [-8]];
-  xVector = [[0.7], [-1.6]];
+  xVector = [[0.7], [-1.6]];*/
 
   error = 0.05;
-  maxIter = 10;*/
+  maxIter = 10;
 
   if (
     origin == null ||
