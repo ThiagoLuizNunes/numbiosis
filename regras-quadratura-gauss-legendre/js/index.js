@@ -23,7 +23,7 @@ function quadratura(pointsNum) {
     (equations = [
       katex.renderToString(
         "\\begin{gathered} " +
-          "\\int^b_a f(x) dx \\approx " +
+          "\\int^1_{-1} f(x) dx \\approx " +
           quadEqSymbols.join(" + ") +
           " \\\\ " +
           "\\approx " +

@@ -83,13 +83,16 @@ function ddTableGenerator(degree) {
       }
     } else {
       var count = 0;
-      for (var j = i - 1; j <= degree; j++) {
+      j = i - 1;
+      for (var k = 0; k <= i - 1; k++, j++) {
         var up = "";
         var bottom = "";
 
+        if (!tableSymbol[i - 1][j]) continue;
+
         up = tableSymbol[i - 1][j] + "-" + tableSymbol[i - 1][j - 1];
         bottom = tableSymbol[0][count + (i - 1)] + "-" + tableSymbol[0][count];
-        table[i][j] =
+        table[i][k] =
           "\\dfrac{" +
           up +
           "}{" +
