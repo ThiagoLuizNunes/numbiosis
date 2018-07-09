@@ -34,6 +34,7 @@ function heun(iterations) {
 
   addStep(
     (title = "Corretor"),
+    (matrix = ""),
     (equations = [
       katex.renderToString(
         underIndex("w", "i+1") +
@@ -45,7 +46,9 @@ function heun(iterations) {
           underIndex("t", "i") +
           "," +
           underIndex("w", "i") +
-          ")," +
+          "), f(" +
+          underIndex("t", "i+1") +
+          "," +
           underIndex("\\widetilde{w}", "i+1") +
           ")]"
       ),
@@ -79,14 +82,16 @@ function heun(iterations) {
           underIndex("t", i) +
           "," +
           underIndex("w", i) +
-          ")," +
+          "), f(" +
+          underIndex("t", i + 1) +
+          "," +
           underIndex("\\widetilde{w}", i + 1) +
           ")]"
       )
     );
   }
 
-  addStep((title = "Método de Heun"), (equations = equations));
+  addStep((title = "Método de Heun"), (matrix = ""), (equations = equations));
 }
 
 /****************************************************/
@@ -111,6 +116,7 @@ function ptMedio(iterations) {
 
   addStep(
     (title = "Iterações"),
+    (matrix = ""),
     (equations = [
       katex.renderToString(
         underIndex("w", "i+1") +
@@ -156,5 +162,9 @@ function ptMedio(iterations) {
     );
   }
 
-  addStep((title = "Método do Ponto Médio"), (equations = equations));
+  addStep(
+    (title = "Método do Ponto Médio"),
+    (matrix = ""),
+    (equations = equations)
+  );
 }
