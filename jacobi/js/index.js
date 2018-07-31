@@ -11,18 +11,18 @@ function jacobi() {
   let oldX = [];
   let actualError = 0;
 
-  origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
+  //origin = [[10, 2, 1], [1, 5, 1], [2, 3, 10]];
 
-  bVector = [[7], [-8], [6]];
+  //bVector = [[7], [-8], [6]];
 
-  xVector = [[0.7], [-1.6], [0.6]];
+  //xVector = [[0.7], [-1.6], [0.6]];
 
   /*origin = [[10, 2], [1, 5]];
   bVector = [[7], [-8]];
   xVector = [[0.7], [-1.6]];*/
 
-  error = 0.05;
-  maxIter = 10;
+  //error = 0.05;
+  //maxIter = 10;
 
   if (
     origin == null ||
@@ -61,7 +61,7 @@ function jacobi() {
     for (let j = 0; j < origin[i].length; j++) {
       if (j != i) {
         matrixMult[i][j] =
-          Math.round(origin[i][j] / origin[i][i] * 1000) / 1000;
+          Math.round((origin[i][j] / origin[i][i]) * 1000) / 1000;
       }
     }
   }
@@ -93,7 +93,7 @@ function jacobi() {
     finalEquations = [];
 
     for (let i = 0; i < oldX.length; i++) {
-      newValue = Math.round(bVector[i] / origin[i][i] * 1000) / 1000;
+      newValue = Math.round((bVector[i] / origin[i][i]) * 1000) / 1000;
       newValueEquation = underIndex("b", i + 1);
       newValueEquationWValues = newValue;
 

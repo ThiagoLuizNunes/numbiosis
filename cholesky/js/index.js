@@ -9,7 +9,7 @@ function cholesky() {
     [-4, 1, -2, 83]
   ];*/
 
-  origin = [[4, 12, -16], [12, 37, -43], [-16, -43, 98]];
+  //origin = [[4, 12, -16], [12, 37, -43], [-16, -43, 98]];
 
   if (origin == null) {
     alert("Preencha todos os campos!");
